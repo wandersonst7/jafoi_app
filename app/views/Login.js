@@ -7,9 +7,15 @@ import { global_styles, BLACK, LINKS_COLOR } from "../styles";
 import Input from "../components/Input"
 import Button from "../components/Button";
 import Checkbox from "../components/Checkbox";
+import RequestMessage from "../components/RequestMessage";
 
 export default function Login(){
 
+    // Utils
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+
+    // Login
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [keepAlive, setKeepAlive] = useState(false);
@@ -32,9 +38,15 @@ export default function Login(){
         });
         
         const json = await resp.json();
+
+        if(resp.status !== 201){
+          setError(json.error)
+        }
+
         console.log(json)
       }catch(err){
         console.log(err)
+        setError("Ocorreu um erro ao realizar o login.")
       }
 
     }
@@ -77,6 +89,12 @@ export default function Login(){
       <View style={{ marginBottom: 34 }}>
         <Checkbox onPress={toggleKeepAlive} text="Manter Conectado"/>
       </View>
+
+      { error && (
+        <View style={{ marginBottom: 24, width: '100%'}}>
+          <RequestMessage status="error" message={error} />
+        </View>
+      )}
 
       <View style={{ marginBottom: 16 }}>
         <Text style={{ color: BLACK }} >Ainda não possui cadastro?</Text>

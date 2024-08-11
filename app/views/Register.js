@@ -44,7 +44,7 @@ export default function Register(){
 
         console.log(json)
       }catch(err){
-        setError("Ocorreu um erro ao realizar o login.")
+        setError("Ocorreu um erro ao realizar o cadastro.")
       }
 
     }
