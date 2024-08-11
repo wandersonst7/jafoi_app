@@ -116,8 +116,10 @@ const register = async (req, res) => {
                 }else{
                     if(err.sqlMessage.includes('users.phone') && err.errno === 1062){
                         res.status(400).json({error: "O número de telefone já está cadastrado."})
+                        return;
                     }else{
                         res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
+                        return;
                     }
                 }
             });
