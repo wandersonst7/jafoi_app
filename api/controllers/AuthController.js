@@ -9,6 +9,11 @@ const login = async (req, res) => {
         const { phone, password, keepAlive } = req.body;
         let passwordHash = null;
 
+        if(!phone || !password){
+            res.status(400).json({error: "É necessário preencher todos os campos."})
+            return;
+        } 
+
         pool.getConnection(function (err, connection) {
             connection.query("SELECT * FROM users WHERE phone='"
                 + phone + "' LIMIT 1", async function (err, rows) {
@@ -42,12 +47,15 @@ const login = async (req, res) => {
                             }
 
                             res.status(200).json({data: { user, token }});
+                            return;
                         }else{
                             res.status(400).json({error: "Senha incorreta."});
+                            return;
                         }
 
                     } else {
                         res.status(400).json({error: "Você ainda não possui cadastro."});
+                        return;
                     }
 
             });
@@ -61,6 +69,11 @@ const register = async (req, res) => {
     try {
         const { name, phone, password } = req.body;
         let passwordHash = null;
+
+        if(!name || !phone || !password){
+            res.status(400).json({error: "É necessário preencher todos os campos."})
+            return;
+        }
 
         await bcrypt
         .hash(password, saltRounds)
@@ -93,8 +106,10 @@ const register = async (req, res) => {
                                     );
 
                                     res.status(201).json({data: { user, token }});
+                                    return;
                                 }else {
                                     res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
+                                    return;
                                 }
                         });
                     }
