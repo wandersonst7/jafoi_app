@@ -1,6 +1,6 @@
 require("dotenv").config();
 const jsonwebtoken = require('jsonwebtoken');
-const { pool } = require('./db');
+const { pool } = require('../db');
 
 const jwtSecret = process.env.JWT_SECRET || "7Dc8uIkop1scb";
 

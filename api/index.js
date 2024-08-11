@@ -1,7 +1,7 @@
 // Importação
 const express = require('express');
 const AuthRoutes = require('./routes/AuthRoutes');
-const { tokenValidated } = require('./auth');
+const { tokenValidated } = require('./middlewares/auth');
 
 // Configuração
 const app = express();

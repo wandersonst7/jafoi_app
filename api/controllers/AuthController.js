@@ -1,5 +1,5 @@
 const { pool } = require('../db');
-const { jwtSecret } = require('../auth');
+const { jwtSecret } = require('../middlewares/auth');
 const jsonwebtoken = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 7;
@@ -79,7 +79,18 @@ const register = async (req, res) => {
                         connection.query("SELECT * FROM users WHERE id='" + rows.insertId
                             + "' LIMIT 1", function (err, rows) {
                                 if (!err && rows.length > 0) {
-                                    res.status(201).json(rows);
+
+                                    const user = {
+                                        "id": rows[0].id,
+                                        "phone": rows[0].phone,
+                                    };
+        
+                                    const token = jsonwebtoken.sign(
+                                        { user },
+                                        jwtSecret,
+                                    );
+
+                                    res.status(201).json({data: { user, token }});
                                 }else {
                                     res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
                                 }
