@@ -1,4 +1,5 @@
 // Importação
+const cors = require('cors');
 const express = require('express');
 const AuthRoutes = require('./routes/AuthRoutes');
 const { tokenValidated } = require('./middlewares/auth');
@@ -7,6 +8,13 @@ const { tokenValidated } = require('./middlewares/auth');
 const app = express();
 const PORT = process.env.PORT || 4000;
 app.use(express.json())
+
+// Liberando Cors
+app.use(cors({
+    origin: '*',
+    methods: 'GET,PUT,POST,DELETE',
+}));
+
 
 // Main
 app.use(AuthRoutes)

@@ -14,9 +14,8 @@ const tokenValidated = (req, res, next) => {
 
     try {
         const payload = jsonwebtoken.verify(token, jwtSecret);
-        const userIdFromToken = typeof payload.user.id !== 'string' && payload.user.id;
         
-        if(!payload.user && !userIdFromToken){
+        if(!payload.user){
             return res.status(401).json({error: "Token inválido!"})
         }
 

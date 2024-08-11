@@ -23,6 +23,7 @@ const login = async (req, res) => {
                             const user = {
                                 "id": rows[0].id,
                                 "phone": rows[0].phone,
+                                "name": rows[0].name
                             };
 
                             let token = null;
@@ -83,6 +84,7 @@ const register = async (req, res) => {
                                     const user = {
                                         "id": rows[0].id,
                                         "phone": rows[0].phone,
+                                        "name": rows[0].name
                                     };
         
                                     const token = jsonwebtoken.sign(
