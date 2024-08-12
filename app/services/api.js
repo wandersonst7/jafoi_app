@@ -1,2 +1,2 @@
 
-export const url = process.env.EXPO_PUBLIC_API_ADDRESS_LOCAL;
+export const url = "http://10.0.0.183:4000"

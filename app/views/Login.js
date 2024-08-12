@@ -1,88 +1,92 @@
 import { useState } from "react"
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Image, Pressable } from "react-native";
-import { global_styles, BLACK, LINKS_COLOR } from "../styles";
+import { View, Text, Image, Pressable, ActivityIndicator } from "react-native";
+import { global_styles, BLACK, LINKS_COLOR, ORANGE } from "../styles";
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from "../context/AuthContext";
 
 // components
 import Input from "../components/Input"
 import ButtonComponent from "../components/ButtonComponent";
 import Checkbox from "../components/Checkbox";
 import RequestMessage from "../components/RequestMessage";
-import { useAuth } from "../context/AuthContext";
 
 export default function Login(){
 
-  // Context
-  const { setUser, setToken, login } = useAuth();
+    // Context
+    const { setUser, setToken, login, loading, setLoading, authError } = useAuth();
 
-  // Navigation
-  const navigation = useNavigation();
+    // Navigation
+    const navigation = useNavigation();
 
-  // Utils
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+    // Login
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [keepAlive, setKeepAlive] = useState(false);
 
-  // Login
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [keepAlive, setKeepAlive] = useState(false);
+    // Error
+    const [error, setError] = useState("");
 
-  const handleSubmit = async () => {
+    const handleSubmit = async () => {
 
-    const data = {
-      phone, 
-      password,
-      keepAlive
-    }
-
-    try{
-      setLoading(true)
-      const resp = await login(data);
-      const json = await resp.json();
-
-      if(resp.status !== 200){
-        setError(json.error)
-        return;
+      const data = {
+        phone, 
+        password,
+        keepAlive
       }
 
-      setUser(json.data.user)
-      setToken(json.data.token)
-      navigation.navigate('Home');
-    }catch(err){
-      console.log(err)
-      setError("Ocorreu um erro ao realizar o login.")
-    }finally{
-      setLoading(false)
+      try{
+        setLoading(true)
+        const resp = await login(data);
+        const json = await resp.json();
+
+        if(resp.status !== 200){
+          setError(json.error)
+          return;
+        }
+
+        setUser(json.data.user)
+        setToken(json.data.token)
+        setError("")
+        navigation.navigate('Home');
+      }catch(err){
+        console.log(err)
+        setError("Ocorreu um erro ao realizar o login.")
+      }finally{
+        setLoading(false)
+      }
+
     }
 
-  }
-
-  const toggleKeepAlive = () => {
-    if(keepAlive){
-      setKeepAlive(false)
-    }else{
-      setKeepAlive(true)
+    const toggleKeepAlive = () => {
+      if(keepAlive){
+        setKeepAlive(false)
+      }else{
+        setKeepAlive(true)
+      }
     }
-  }
 
-  const Register = () => {
-    navigation.navigate('Register');
-  }
+    const Register = () => {
+      navigation.navigate('Register');
+    }
 
-  // Exibindo Loading
-  if(loading){
-    return <Text>Loading...</Text>
-  }
+    // Exibindo Loading
+    if(loading){
+        return (
+          <View style={global_styles.container}>
+            <ActivityIndicator size="large" color={ ORANGE } />
+          </View>
+        )
+    }
 
   return (
     <View style={global_styles.container}>
 
-      <Image style={{ marginBottom: 64 }} source={require('../assets/img/logo.png')} />
+      <Image style={{ marginBottom: 34 }} source={require('../assets/img/logo.png')} />
 
-      <Text style={{...global_styles.title, marginBottom: 34}}>Login</Text>
+      <Text style={{...global_styles.title, marginBottom: 34 }}>Login</Text>
 
-      <View style={{ marginBottom: 16, width: '100%'}}>
+      <View style={{ marginBottom: 16, width: '100%' }}>
         <Input
           autoFocus={true} 
           onChange={setPhone} 
@@ -109,6 +113,12 @@ export default function Login(){
       { error && (
         <View style={{ marginBottom: 24, width: '100%'}}>
           <RequestMessage status="error" message={error} />
+        </View>
+      )}
+
+      { authError && (
+        <View style={{ marginBottom: 24, width: '100%'}}>
+          <RequestMessage status="error" message={authError} />
         </View>
       )}
 

@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { url } from '../services/api';
 
 const AuthContext = createContext();
@@ -8,6 +9,8 @@ export const AuthContextProvider = ({ children }) => {
     // states
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [authError, setAuthError] = useState("");
     
     // functions
     const login = async (data) => {
@@ -31,14 +34,23 @@ export const AuthContextProvider = ({ children }) => {
     }
 
     const logout = () => {
-        setUser(null)
-        setToken(null)
+        setUser(null);
+        setToken(null);
     }
 
-    // useEffect para resgatar dados do async storaged
-
     return (
-        <AuthContext.Provider value={{ login, register, logout, user, setUser, token, setToken }}>
+        <AuthContext.Provider value={{ login, 
+                                        register, 
+                                        logout, 
+                                        user, 
+                                        setUser, 
+                                        token, 
+                                        setToken, 
+                                        loading, 
+                                        setLoading,
+                                        authError,
+                                        setAuthError
+                                    }}>
             { children }
         </AuthContext.Provider>
     )

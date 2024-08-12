@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useAuth } from '../context/AuthContext';
 
+// Pages
 import Login from '../views/Login';
 import Register from '../views/Register';
 import Home from '../views/Home';
-import { useAuth } from '../context/AuthContext';
+import Product from '../views/Product';
 
 const HomeStack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => {
 
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   return (
     
@@ -20,8 +22,11 @@ const HomeStackNavigator = () => {
       contentStyle: { backgroundColor: 'white' },
     }}>
 
-      {user ? (
-        <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home} />
+      {user && token ? (
+        <>
+          <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home} />
+          <HomeStack.Screen options={{headerShown: false}} name="Produto" component={Product} />
+        </>
       ): (
         <> 
           <HomeStack.Screen options={{headerShown: false}} name="Login" component={Login} />

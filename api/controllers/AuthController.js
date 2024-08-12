@@ -102,6 +102,7 @@ const register = async (req, res) => {
                                     const token = jsonwebtoken.sign(
                                         { user },
                                         jwtSecret,
+                                        { expiresIn: '60m'}
                                     );
 
                                     res.status(201).json({data: { user, token }});

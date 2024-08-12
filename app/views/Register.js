@@ -1,31 +1,30 @@
 import { useState } from "react"
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Image, Pressable } from "react-native";
-import { global_styles, BLACK, LINKS_COLOR } from "../styles";
+import { View, Text, Image, Pressable, ActivityIndicator } from "react-native";
+import { global_styles, BLACK, LINKS_COLOR, ORANGE } from "../styles";
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from "../context/AuthContext";
 
 // components
 import Input from "../components/Input"
 import ButtonComponent from "../components/ButtonComponent";
 import RequestMessage from "../components/RequestMessage";
-import { useAuth } from "../context/AuthContext";
 
 export default function Register(){
 
-  // Context
-  const { register, setUser, setToken } = useAuth();
+    // Context
+    const { register, setUser, setToken, loading, setLoading, } = useAuth();
 
-  // Navigation
-  const navigation = useNavigation();
+    // Navigation
+    const navigation = useNavigation();
 
-  // Utils
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  // Register
+    // Register
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
+    
+    // Error
+    const [error, setError] = useState("");
 
     const handleSubmit = async () => {
 
@@ -34,7 +33,6 @@ export default function Register(){
         phone, 
         password,
       }
-
       
       try{
         setLoading(true)
@@ -48,6 +46,7 @@ export default function Register(){
 
         setUser(json.data.user)
         setToken(json.data.token)
+        setError("")
         navigation.navigate('Home');
 
       }catch(err){
@@ -64,13 +63,17 @@ export default function Register(){
 
     // Exibindo Loading
     if(loading){
-      return <Text>Loading...</Text>
+      return (
+        <View style={global_styles.container}>
+          <ActivityIndicator size="large" color={ ORANGE } />
+        </View>
+      )
     }
 
   return (
     <View style={global_styles.container}>
 
-      <Image style={{ marginBottom: 64 }} source={require('../assets/img/logo.png')} />
+      <Image style={{ marginBottom: 34 }} source={require('../assets/img/logo.png')} />
 
       <Text style={{...global_styles.title, marginBottom: 34}}>Cadastre-se</Text>
 
