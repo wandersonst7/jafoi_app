@@ -2,7 +2,7 @@ import { StyleSheet, TextInput } from "react-native";
 import { BLACK, PLACEHOLDER_COLOR } from "../styles";
 import MaskInput from 'react-native-mask-input';
 
-export default function Input({ maskInput = false, mask, autoFocus = false, placeholder, password = false, onChange, value }){
+export default function Input({ type = "", maskInput = false, mask, autoFocus = false, placeholder, password = false, onChange, value }){
 
 
   if(maskInput){
@@ -17,6 +17,7 @@ export default function Input({ maskInput = false, mask, autoFocus = false, plac
           }}
           value={value}
           mask={mask}
+          keyboardType={type}
       />
     )
   }else{
@@ -29,6 +30,7 @@ export default function Input({ maskInput = false, mask, autoFocus = false, plac
           secureTextEntry={password} 
           onChangeText={text => onChange(text)}
           value={value}
+          keyboardType={type}
       />
     )
   }

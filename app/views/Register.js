@@ -89,6 +89,7 @@ export default function Register(){
         <Input
           autoFocus={true}
           maskInput={true}
+          type="numeric"
           mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} 
           onChange={setPhone} 
           value={phone} 
