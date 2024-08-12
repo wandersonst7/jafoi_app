@@ -1,5 +1,6 @@
 const { pool } = require('../db');
 const { jwtSecret } = require('../middlewares/auth');
+const { loginValidation, registerValidation } = require('../middlewares/authValidation');
 const jsonwebtoken = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 7;
@@ -9,8 +10,10 @@ const login = async (req, res) => {
         const { phone, password, keepAlive } = req.body;
         let passwordHash = null;
 
-        if(!phone || !password){
-            res.status(400).json({error: "É necessário preencher todos os campos."})
+        const validation = loginValidation(req.body);
+
+        if(validation){
+            res.status(400).json(validation)
             return;
         } 
 
@@ -69,10 +72,12 @@ const register = async (req, res) => {
         const { name, phone, password } = req.body;
         let passwordHash = null;
 
-        if(!name || !phone || !password){
-            res.status(400).json({error: "É necessário preencher todos os campos."})
+        const validation = registerValidation(req.body);
+
+        if(validation){
+            res.status(400).json(validation)
             return;
-        }
+        } 
 
         await bcrypt
         .hash(password, saltRounds)
