@@ -88,7 +88,9 @@ export default function Login(){
 
       <View style={{ marginBottom: 16, width: '100%' }}>
         <Input
-          autoFocus={true} 
+          autoFocus={true}
+          maskInput={true}
+          mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} 
           onChange={setPhone} 
           value={phone} 
           placeholder="Número de telefone"/>

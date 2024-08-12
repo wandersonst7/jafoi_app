@@ -1,18 +1,38 @@
 import { StyleSheet, TextInput } from "react-native";
 import { BLACK, PLACEHOLDER_COLOR } from "../styles";
+import MaskInput from 'react-native-mask-input';
 
-export default function Input({ autoFocus = false, placeholder, password = false, onChange, value }){
-  return (
-    <TextInput
-        style={styles.input}
-        autoFocus={autoFocus}
-        placeholder={placeholder}
-        placeholderTextColor={PLACEHOLDER_COLOR}
-        secureTextEntry={password} 
-        onChangeText={text => onChange(text)}
-        value={value}
-    />
-  )
+export default function Input({ maskInput = false, mask, autoFocus = false, placeholder, password = false, onChange, value }){
+
+
+  if(maskInput){
+    return (
+      <MaskInput
+          style={styles.input}
+          autoFocus={autoFocus}
+          placeholder={placeholder}
+          placeholderTextColor={PLACEHOLDER_COLOR}
+          onChangeText={(masked, unmasked) => {
+            onChange(masked);
+          }}
+          value={value}
+          mask={mask}
+      />
+    )
+  }else{
+    return (
+      <TextInput
+          style={styles.input}
+          autoFocus={autoFocus}
+          placeholder={placeholder}
+          placeholderTextColor={PLACEHOLDER_COLOR}
+          secureTextEntry={password} 
+          onChangeText={text => onChange(text)}
+          value={value}
+      />
+    )
+  }
+
 }
 
 const styles = StyleSheet.create({

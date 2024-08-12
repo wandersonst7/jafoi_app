@@ -85,8 +85,11 @@ export default function Register(){
           placeholder="Seu nome"/>
       </View>
 
-      <View style={{ marginBottom: 16, width: '100%'}}>
+      <View style={{ marginBottom: 16, width: '100%' }}>
         <Input
+          autoFocus={true}
+          maskInput={true}
+          mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} 
           onChange={setPhone} 
           value={phone} 
           placeholder="Seu número de telefone"/>
