@@ -49,12 +49,14 @@ const login = async (req, res) => {
                             res.status(200).json({data: { user, token }});
                             return;
                         }else{
-                            res.status(400).json({error: "Senha incorreta."});
+                            // Senha incorreta
+                            res.status(400).json({error: "Número de telefone ou senha incorreta."});
                             return;
                         }
 
                     } else {
-                        res.status(400).json({error: "Você ainda não possui cadastro."});
+                        // usuário não existe no banco
+                        res.status(400).json({error: "Número de telefone ou senha incorreta."});
                         return;
                     }
 
