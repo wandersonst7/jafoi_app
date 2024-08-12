@@ -47,17 +47,14 @@ const login = async (req, res) => {
                             }
 
                             res.status(200).json({data: { user, token }});
-                            return;
                         }else{
                             // Senha incorreta
                             res.status(400).json({error: "Número de telefone ou senha incorreta."});
-                            return;
                         }
 
                     } else {
                         // usuário não existe no banco
                         res.status(400).json({error: "Número de telefone ou senha incorreta."});
-                        return;
                     }
 
             });
@@ -108,20 +105,16 @@ const register = async (req, res) => {
                                     );
 
                                     res.status(201).json({data: { user, token }});
-                                    return;
                                 }else {
                                     res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
-                                    return;
                                 }
                         });
                     }
                 }else{
                     if(err.sqlMessage.includes('users.phone') && err.errno === 1062){
                         res.status(400).json({error: "O número de telefone já está cadastrado."})
-                        return;
                     }else{
                         res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
-                        return;
                     }
                 }
             });

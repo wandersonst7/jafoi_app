@@ -1,7 +1,7 @@
 import { StyleSheet, Pressable, Text } from "react-native";
 import { ORANGE, WHITE } from "../styles";
 
-export default function Button({ text, onPress }){
+export default function ButtonComponent({ text, onPress }){
   return (
     <Pressable style={styles.button} onPress={onPress}>
         <Text style={styles.text}>{text}</Text>

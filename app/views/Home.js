@@ -1,7 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { useAuth } from '../context/AuthContext';
 
 export default function Home() {
+
+  const { user, token } = useAuth();
+  console.log(user)
+  console.log(token)
+
   return (
     <View style={styles.container}>
       <Text>Página Home</Text>

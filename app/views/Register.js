@@ -1,14 +1,22 @@
 import { useState } from "react"
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { global_styles, BLACK, LINKS_COLOR } from "../styles";
+import { useNavigation } from '@react-navigation/native';
 
 // components
 import Input from "../components/Input"
-import Button from "../components/Button";
+import ButtonComponent from "../components/ButtonComponent";
 import RequestMessage from "../components/RequestMessage";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register(){
+
+  // Context
+  const { register, setUser, setToken } = useAuth();
+
+  // Navigation
+  const navigation = useNavigation();
 
   // Utils
   const [loading, setLoading] = useState(false);
@@ -21,32 +29,42 @@ export default function Register(){
 
     const handleSubmit = async () => {
 
-      const register = {
+      const data = {
         name,
         phone, 
         password,
       }
 
+      
       try{
-        const resp = await fetch('http://localhost:4000/register', {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(register)
-        });
-        
+        setLoading(true)
+        const resp = await register(data);
         const json = await resp.json();
 
         if(resp.status !== 201){
           setError(json.error)
+          return;
         }
 
-        console.log(json)
+        setUser(json.data.user)
+        setToken(json.data.token)
+        navigation.navigate('Home');
+
       }catch(err){
         setError("Ocorreu um erro ao realizar o cadastro.")
+      }finally{
+        setLoading(false)
       }
+      
+    }
 
+    const Login = () => {
+      navigation.navigate('Login');
+    }
+
+    // Exibindo Loading
+    if(loading){
+      return <Text>Loading...</Text>
     }
 
   return (
@@ -80,7 +98,7 @@ export default function Register(){
       </View>
 
       <View style={{ marginBottom: 24, width: '100%'}}>
-        <Button text="Cadastre-se" onPress={ handleSubmit }/>
+        <ButtonComponent text="Cadastre-se" onPress={ handleSubmit }/>
       </View>
 
       { error && (
@@ -94,7 +112,9 @@ export default function Register(){
       </View>
 
       <View>
-        <Text style={{ color: LINKS_COLOR, fontWeight: '700' }}>Fazer Login</Text>
+        <Pressable onPress={() => Login()}>
+          <Text style={{ color: LINKS_COLOR, fontWeight: '700' }}>Fazer Login</Text>
+        </Pressable>
       </View>
       
       <StatusBar style="auto" />

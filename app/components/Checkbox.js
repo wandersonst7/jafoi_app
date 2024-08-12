@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import { BLACK, PLACEHOLDER_COLOR } from "../styles";
-import { useEffect, useState } from "react";
+import { BLACK } from "../styles";
+import { useState } from "react";
 import { Image } from "react-native";
 
 export default function Checkbox({ text, onPress }){

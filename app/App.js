@@ -1,11 +1,14 @@
-import Login from './views/Login';
-import Register from './views/Register';
+import { StatusBar } from 'expo-status-bar';
+import RootNavigator from "./navigation/RootNavigator";
+import { AuthContextProvider } from './context/AuthContext';
 
 export default function App() {
 
-
   return (
-    <Login />
+    <AuthContextProvider>
+      <RootNavigator />
+      <StatusBar style="auto" />
+    </AuthContextProvider>
   );
 
 }
