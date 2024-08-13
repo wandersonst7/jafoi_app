@@ -17,7 +17,7 @@ export default function Input({ type = "", maskInput = false, mask, autoFocus = 
           }}
           value={value}
           mask={mask}
-          keyboardType={type}
+          inputMode={type}
       />
     )
   }else{
@@ -30,7 +30,7 @@ export default function Input({ type = "", maskInput = false, mask, autoFocus = 
           secureTextEntry={password} 
           onChangeText={text => onChange(text)}
           value={value}
-          keyboardType={type}
+          inputMode={type}
       />
     )
   }
