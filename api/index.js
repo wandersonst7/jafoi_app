@@ -2,7 +2,9 @@
 const cors = require('cors');
 const express = require('express');
 const AuthRoutes = require('./routes/AuthRoutes');
+const ProductRoutes = require('./routes/ProductRoutes');
 const { tokenValidated } = require('./middlewares/auth');
+
 
 // Configuração
 const app = express();
@@ -21,6 +23,9 @@ app.use(AuthRoutes)
 
 // Protegendo rotas com token
 app.use('*', tokenValidated)
+
+// Rota de produtos
+app.use(ProductRoutes)
 
 // rota privada teste
 app.get('/private', (req, res) => {

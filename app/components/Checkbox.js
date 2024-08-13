@@ -1,24 +1,19 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { BLACK } from "../styles";
-import { useState } from "react";
-import { Image } from "react-native";
+import Feather from '@expo/vector-icons/Feather';
 
-export default function Checkbox({ text, onPress }){
 
-    const [checked, setChecked] = useState(false);
+export default function Checkbox({ text, checked, setChecked }){
 
     if(checked){
         return (
             <Pressable
                     style={styles.container} 
                     onPress={() => { 
-                        setChecked(false) 
-                        onPress()
+                        setChecked(false)
                 }}>
                     <View style={styles.box_checked}>
-                        <Image 
-                            style={{ width: 24, height: 24 }} 
-                            source={require('../assets/img/check.png')} />
+                        <Feather name="check" size={24} color="white" />
                     </View>
                     <Text style={styles.text}>{text}</Text>
             </Pressable>
@@ -28,8 +23,7 @@ export default function Checkbox({ text, onPress }){
             <Pressable
                 style={styles.container} 
                 onPress={() => { 
-                    setChecked(true) 
-                    onPress()
+                    setChecked(true)
             }}>
                 <View style={styles.box}></View>
                 <Text style={styles.text}>{text}</Text>

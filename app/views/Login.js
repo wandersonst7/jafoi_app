@@ -60,14 +60,6 @@ export default function Login(){
 
     }
 
-    const toggleKeepAlive = () => {
-      if(keepAlive){
-        setKeepAlive(false)
-      }else{
-        setKeepAlive(true)
-      }
-    }
-
     const Register = () => {
       navigation.navigate('Register');
     }
@@ -112,9 +104,10 @@ export default function Login(){
       </View>
 
       <View style={{ marginBottom: 34 }}>
-        <Checkbox onPress={toggleKeepAlive} text="Manter Conectado"/>
+        <Checkbox checked={keepAlive} setChecked={setKeepAlive} text="Manter Conectado"/>
       </View>
 
+      {/* error view text node está aqui: */}
       { error && (
         <View style={{ marginBottom: 24, width: '100%'}}>
           <RequestMessage status="error" message={error} />
