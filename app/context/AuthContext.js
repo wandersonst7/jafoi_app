@@ -33,10 +33,57 @@ export const AuthContextProvider = ({ children }) => {
         });
     }
 
-    const logout = () => {
+    const logout = async () => {
         setUser(null);
         setToken(null);
+        await AsyncStorage.removeItem('jfa_token');
     }
+
+    const tokenVerify = async (data) => {
+        return await fetch(url + "/tokenVerify", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });
+    }
+
+    // Resgatando dados após reabrir app
+    useEffect(() => {
+
+        (async () => {
+
+            setLoading(true)
+            let tokenStoraged = null;
+
+            try {
+                tokenStoraged = await AsyncStorage.getItem('jfa_token');
+
+                if(tokenStoraged){
+                    const resp = await tokenVerify({ token: tokenStoraged })
+                    const json = await resp.json();
+
+                    if(resp.status !== 200){
+                        setAuthError("A sessão expirou.")
+                        await logout();
+                        return;
+                    }
+
+                    setUser(json.data.user)
+                    setToken(tokenStoraged);
+                }
+            } catch (error) {
+                setAuthError("A sessão expirou.")
+                await logout()
+            }finally{
+                setLoading(false)
+            }
+            
+
+        })()
+
+    }, [])
 
     return (
         <AuthContext.Provider value={{ login, 

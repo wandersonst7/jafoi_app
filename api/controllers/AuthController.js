@@ -131,7 +131,47 @@ const register = async (req, res) => {
     }
 }
 
+const tokenVerifyAndGetUserData = (req, res) => {
+    const { token } = req.body;
+
+    if(!token){
+        res.status(401).json({error: "Acesso negado!"})
+        return;
+    }
+
+    try {
+        const payload = jsonwebtoken.verify(token, jwtSecret);
+        
+        if(!payload.user){
+            res.status(401).json({error: "Token inválido!"})
+            return;
+        }
+
+        pool.getConnection(function (err, connection) {
+            connection.query("SELECT id, name, phone FROM users WHERE id='"
+            + payload.user.id + "' LIMIT 1", function (err, rows) {
+                if(!err && rows.length > 0){
+                    const user = {
+                        "id": rows[0].id,
+                        "phone": rows[0].phone,
+                        "name": rows[0].name
+                    };
+
+                    res.status(200).json({data: { user }});
+                }else{
+                    res.status(401).json({error: "Token inválido!"})
+                }
+            });
+        });
+
+    } catch (error) {
+        res.status(401).json({error: "Token inválido!"})
+    }
+
+}
+
 module.exports = {
     login,
-    register
+    register,
+    tokenVerifyAndGetUserData
 }

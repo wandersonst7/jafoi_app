@@ -4,6 +4,7 @@ import { View, Text, Image, Pressable, ActivityIndicator } from "react-native";
 import { global_styles, BLACK, LINKS_COLOR, ORANGE } from "../styles";
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from "../context/AuthContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // components
 import Input from "../components/Input"
@@ -46,9 +47,9 @@ export default function Register(){
 
         setUser(json.data.user)
         setToken(json.data.token)
+        await AsyncStorage.setItem('jfa_token', json.data.token);
         setError("")
         navigation.navigate('Home');
-
       }catch(err){
         setError("Ocorreu um erro ao realizar o cadastro.")
       }finally{

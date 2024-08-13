@@ -28,7 +28,7 @@ export default function Home() {
           })
 
           if(resp.status === 401){
-            logout();
+            await logout()
             setAuthError("A sessão expirou.")
             navigation.navigate("Login");
             return;
@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text>Página Home</Text>
-      <Pressable onPress={() => logout()}>
+      <Pressable onPress={async () => await logout()}>
         <Text style={{ color: '#00ff00', fontWeight: '700' }}>Logout</Text>
       </Pressable>
       <Pressable onPress={() => Produto()}>
