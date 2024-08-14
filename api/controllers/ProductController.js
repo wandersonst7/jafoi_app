@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');
+const { createAndUpdateValidation } = require('../middlewares/productValidation');
 
 const searchProducts = (req, res) => {
 
@@ -101,6 +102,12 @@ const createProduct = async (req, res) => {
         categoryId
     } = req.body;
 
+    const validation = createAndUpdateValidation(req.body);
+
+    if(validation){
+        return res.status(400).json(validation)
+    }
+
     try {
 
         const category = await Category.findById(categoryId.toString());
@@ -152,6 +159,11 @@ const updateProduct = async (req, res) => {
         categoryId,
     } = req.body;
 
+    const validation = createAndUpdateValidation(req.body);
+
+    if(validation){
+        return res.status(400).json(validation)
+    }
 
     try {
         const product = await Product.findById(id);

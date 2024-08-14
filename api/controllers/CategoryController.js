@@ -37,6 +37,10 @@ const getCategory = async (req, res) => {
 const createCategory = async (req, res) => {
     const { name } = req.body;
 
+    if(!name){
+        return res.status(400).json({error: "É necessário preencher todos os campos."})
+    }
+
     if(req.user.role !== 'ADMIN'){
         res.status(403).json({error: "Você não tem permissão."});
         return;
@@ -71,6 +75,10 @@ const updateCategory = async (req, res) => {
     const id = req.params.id;
     const { name } = req.body;
 
+    if(!name){
+        return res.status(400).json({error: "É necessário preencher todos os campos."})
+    }
+
     if(req.user.role !== 'ADMIN'){
         res.status(403).json({error: "Você não tem permissão."});
         return;
@@ -86,10 +94,8 @@ const updateCategory = async (req, res) => {
             return;
         }
 
-        if(name){
-            category.name = name;
-        }
-    
+        category.name = name;
+        
         await category.save();
 
         res.status(200).json(category)
