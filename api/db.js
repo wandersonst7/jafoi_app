@@ -1,12 +1,17 @@
 require("dotenv").config();
-const mysql = require('mysql');
+const mongoose = require('mongoose');
 
-const pool = mysql.createPool({
-  host: process.env.BD_HOST,
-  port: process.env.BD_PORT,
-  user: process.env.BD_USER,
-  password: process.env.BD_PASSWORD,
-  database: process.env.BD_DATABASE
-});
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
 
-module.exports = { pool };
+const conn = async () => {
+  try {
+    const dbConn = await mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@jafoiapp.drwfk.mongodb.net/?retryWrites=true&w=majority&appName=JaFoiApp`)
+
+    console.log("Conectou ao banco!")
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+module.exports = conn;

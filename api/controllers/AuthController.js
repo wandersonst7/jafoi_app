@@ -1,142 +1,147 @@
-const { pool } = require('../db');
-const { jwtSecret } = require('../middlewares/auth');
+require("dotenv").config();
+const User = require('../models/User');
 const { loginValidation, registerValidation } = require('../middlewares/authValidation');
+
 const jsonwebtoken = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const saltRounds = 7;
 
-const login = async (req, res) => {
-    try {
-        const { phone, password, keepAlive } = req.body;
-        let passwordHash = null;
-
-        const validation = loginValidation(req.body);
-
-        if(validation){
-            res.status(400).json(validation)
-            return;
-        } 
-
-        pool.getConnection(function (err, connection) {
-            connection.query("SELECT * FROM users WHERE phone='"
-                + phone + "' LIMIT 1", async function (err, rows) {
-                    
-                    if (!err && rows.length > 0) {
-                        passwordHash = rows[0].password;
-
-                        const passwordVerified = await bcrypt.compare(password, passwordHash);
-                    
-                        if(passwordVerified){
-                            // Entra aqui se tudo estiver certo
-                            const user = {
-                                "id": rows[0].id,
-                                "phone": rows[0].phone,
-                                "name": rows[0].name
-                            };
-
-                            let token = null;
-
-                            if(keepAlive){
-                                token = jsonwebtoken.sign(
-                                    { user },
-                                    jwtSecret,
-                                );
-                            }else{
-                                token = jsonwebtoken.sign(
-                                    { user },
-                                    jwtSecret,
-                                    { expiresIn: '60m'}
-                                );
-                            }
-
-                            res.status(200).json({data: { user, token }});
-                        }else{
-                            // Senha incorreta
-                            res.status(400).json({error: "Número de telefone ou senha incorreta."});
-                        }
-
-                    } else {
-                        // usuário não existe no banco
-                        res.status(400).json({error: "Número de telefone ou senha incorreta."});
-                    }
-
-            });
-        });
-    } catch (error) {
-        res.status(400).json({error: "Ocorreu um erro ao realizar o login."})
-    }
-}
+const jwtSecret = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
     try {
         const { name, phone, password } = req.body;
-        let passwordHash = null;
+
+        // Autorização
+        const role = 'USER';
 
         const validation = registerValidation(req.body);
 
         if(validation){
-            res.status(400).json(validation)
-            return;
-        } 
-
-        await bcrypt
-        .hash(password, saltRounds)
-        .then(hash => { 
-            passwordHash = hash;
-        })
-        .catch(err => console.error(err.message))
-    
-        pool.getConnection(function (err, connection) {
-    
-            connection.query(`INSERT INTO users (name, phone, password) VALUES ('${name}', '${phone}', '${passwordHash}')`
-            , function (err, rows) {
-
-                if(!err){
-                    if (rows.affectedRows) {
-
-                        connection.query("SELECT * FROM users WHERE id='" + rows.insertId
-                            + "' LIMIT 1", function (err, rows) {
-                                if (!err && rows.length > 0) {
-
-                                    const user = {
-                                        "id": rows[0].id,
-                                        "phone": rows[0].phone,
-                                        "name": rows[0].name
-                                    };
+            return res.status(400).json(validation)
+        }
         
-                                    const token = jsonwebtoken.sign(
-                                        { user },
-                                        jwtSecret,
-                                        { expiresIn: '60m'}
-                                    );
+        // verfificando se já existe o numero de telefone
+        const user = await User.findOne({ phone });
 
-                                    res.status(201).json({data: { user, token }});
-                                }else {
-                                    res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
-                                }
-                        });
-                    }
-                }else{
-                    if(err.sqlMessage.includes('users.phone') && err.errno === 1062){
-                        res.status(400).json({error: "O número de telefone já está cadastrado."})
-                    }else{
-                        res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
-                    }
-                }
-            });
-        });
-       
+        if(user) {
+            return res.status(400).json({error: "O número de telefone já está cadastrado."});
+        }
+
+        // Gerando hash da senha
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        // Criando usuário
+        const newUser = await User.create({
+            name,
+            phone,
+            password: passwordHash,
+            role
+        })
+
+        // Verificando se o usuário foi cadastrado
+        if(!newUser){
+            res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."});
+            return;
+        }
+        
+        // Token
+        const payloadToken = {
+            id: newUser._id,
+            phone: newUser.phone,
+        }
+
+        const token = jsonwebtoken.sign(
+            { user: payloadToken },
+            jwtSecret,
+            { expiresIn: '60m'}
+        );
+
+        // Dados do usuário
+        const returnUser = {
+            id: newUser._id,
+            phone: newUser.phone,
+            name: newUser.name,
+            role: newUser.role,
+        }
+
+        res.status(201).json({data: {
+            user: returnUser,
+            token: token
+        }});
+
     } catch (error) {
         res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
     }
 }
 
-const tokenVerifyAndGetUserData = (req, res) => {
+const login = async (req, res) => {
+    try {
+        const { phone, password, keepAlive } = req.body;
+
+        const validation = loginValidation(req.body);
+
+        if(validation){
+            return res.status(400).json(validation)
+        }
+        
+        const user = await User.findOne({ phone });
+
+        if(!user){
+            res.status(400).json({error: "Número de telefone ou senha incorreta."});
+            return;
+        }
+
+        if(!(await bcrypt.compare(password, user.password))){
+            res.status(400).json({error: "Número de telefone ou senha incorreta."});
+            return;
+        }
+
+        // Token
+        const payloadToken = {
+            id: user._id,
+            phone: user.phone,
+        }
+
+        let token = null;
+        
+        if(keepAlive){
+            token = jsonwebtoken.sign(
+                { user: payloadToken },
+                jwtSecret,
+            );
+        }else{
+            token = jsonwebtoken.sign(
+                { user: payloadToken },
+                jwtSecret,
+                { expiresIn: '60m'}
+            );
+        }
+
+        const returnUser = {
+            id: user._id,
+            phone: user.phone,
+            name: user.name,
+            role: user.role,
+        }
+        
+        res.status(200).json({ data: {
+            user: returnUser,
+            token: token
+        }});
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({error: "Ocorreu um erro ao realizar o login."})
+    }
+}
+
+const tokenVerifyAndGetUserData = async (req, res) => {
     const { token } = req.body;
 
     if(!token){
-        res.status(401).json({error: "Acesso negado!"})
-        return;
+        return res.status(401).json({error: "Acesso negado!"});
     }
 
     try {
@@ -147,22 +152,15 @@ const tokenVerifyAndGetUserData = (req, res) => {
             return;
         }
 
-        pool.getConnection(function (err, connection) {
-            connection.query("SELECT id, name, phone FROM users WHERE id='"
-            + payload.user.id + "' LIMIT 1", function (err, rows) {
-                if(!err && rows.length > 0){
-                    const user = {
-                        "id": rows[0].id,
-                        "phone": rows[0].phone,
-                        "name": rows[0].name
-                    };
+        const user = await User.findById(payload.user.id).select("-password -createdAt -updatedAt -__v");
 
-                    res.status(200).json({data: { user }});
-                }else{
-                    res.status(401).json({error: "Token inválido!"})
-                }
-            });
-        });
+        // Verificando se o usuário existe
+        if(!user){
+            res.status(401).json({error: "Token inválido!"})
+            return;
+        }
+
+        res.status(200).json({data: { user }});
 
     } catch (error) {
         res.status(401).json({error: "Token inválido!"})

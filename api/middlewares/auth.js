@@ -1,10 +1,10 @@
 require("dotenv").config();
+const User = require('../models/User');
 const jsonwebtoken = require('jsonwebtoken');
-const { pool } = require('../db');
 
-const jwtSecret = process.env.JWT_SECRET || "7Dc8uIkop1scb";
+const jwtSecret = process.env.JWT_SECRET;
 
-const tokenValidated = (req, res, next) => {
+const tokenValidate = async (req, res, next) => {
     const authHeader = req.headers["authorization"]
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -13,31 +13,19 @@ const tokenValidated = (req, res, next) => {
     }
 
     try {
+    
         const payload = jsonwebtoken.verify(token, jwtSecret);
+
+        req.user = await User.findById(payload.user.id).select("-password");
+
+        next();
         
-        if(!payload.user){
-            return res.status(401).json({error: "Token inválido!"})
-        }
-
-        pool.getConnection(function (err, connection) {
-            connection.query("SELECT id, name, phone FROM users WHERE id='"
-            + payload.user.id + "' LIMIT 1", function (err, rows) {
-                if(!err){
-                    req.user = rows[0]; 
-                    next();
-                }else{
-                    return res.status(401).json({error: "Token inválido!"})
-                }
-            });
-        });
-
     } catch (error) {
-        return res.status(401).json({error: "Token inválido!"})
+        return res.status(401).json({error: "Token inválido."})
     }
 
 }
 
 module.exports = {
-    jwtSecret,
-    tokenValidated
+    tokenValidate
 }
