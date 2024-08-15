@@ -1,5 +1,6 @@
 // Importação
 const cors = require('cors');
+const path = require("path");
 const express = require('express');
 const conn = require('./db')
 const { tokenValidate } = require('./middlewares/auth');
@@ -13,6 +14,8 @@ const CategoryRoutes = require('./routes/CategoryRoutes');
 const app = express();
 const PORT = process.env.PORT || 4000;
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
 
 // Conectando bd
 conn();

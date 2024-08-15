@@ -1,6 +1,6 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');
-const { createAndUpdateValidation } = require('../middlewares/productValidation');
+const deleteImage = require('../utils/deleteImage');
 
 const searchProducts = async (req, res) => {
     const { search } = req.query;
@@ -95,8 +95,6 @@ const getProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
 
-    const image = req.file.filename;
-
     const { title,
         price, 
         description,
@@ -108,12 +106,6 @@ const createProduct = async (req, res) => {
         categoryId
     } = req.body;
 
-    const validation = createAndUpdateValidation(req, "create");
-
-    if(validation){
-        return res.status(400).json(validation)
-    }
-
     try {
 
         const category = await Category.findById(categoryId.toString());
@@ -121,6 +113,8 @@ const createProduct = async (req, res) => {
         if(!category){
             return res.status(404).json({ error: "Esta categoria não existe." })
         }
+
+        const image = req.file.filename;
 
         const newProduct = await Product.create({
             title,
@@ -164,12 +158,6 @@ const updateProduct = async (req, res) => {
         categoryId,
     } = req.body;
 
-    const validation = createAndUpdateValidation(req, "update");
-
-    if(validation){
-        return res.status(400).json(validation)
-    }
-
     try {
         const product = await Product.findById(id);
 
@@ -186,6 +174,12 @@ const updateProduct = async (req, res) => {
             return;
         }
 
+        const image = req.file.filename;
+
+        // excluindo imagem antiga
+        const pathFile = "uploads\\products\\"
+        deleteImage(pathFile + product.image)
+
         product.title = title,
         product.price = price, 
         product.description = description,
@@ -194,6 +188,7 @@ const updateProduct = async (req, res) => {
         product.contact = contact, 
         product.whatsapp = whatsapp, 
         product.username = username,
+        product.image = image,
         product.userId = req.user._id,
         product.categoryId = categoryId
     
@@ -221,6 +216,10 @@ const deleteProduct = async (req, res) => {
         }
 
         await Product.findByIdAndDelete(id);
+        // excluindo imagem antiga
+        const pathFile = "uploads\\products\\"
+        deleteImage(pathFile + product.image)
+        
         res.status(200).json({ success:"Produto excluído com sucesso."})
     
     } catch (error) {

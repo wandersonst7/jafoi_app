@@ -1,21 +1,31 @@
-const createAndUpdateValidation = (req, method) => {
+const deleteImage = require('../utils/deleteImage');
 
-    if(!req.file && method === "create"){
-        return { error: "A imagem é obrigatória." };
+const createAndUpdateValidation = (req, res, next) => {
+
+    try {
+
+        const filePath = req.file.path;
+
+        if(!req.body.title ||
+            !req.body.price || 
+            !req.body.description ||
+            !req.body.location || 
+            !req.body.contact || 
+            !req.body.whatsapp ||
+            !req.body.username ||
+            !req.body.categoryId){
+
+            deleteImage(filePath)
+                
+            res.status(400).json({error: "É necessário preencher todos os campos."});
+            return;
+        }
+    } catch (error) {
+        res.status(400).json({ error: "Não foi possível cadastrar o produto." })
+        return;
     }
 
-    if(!req.body.title ||
-        !req.body.price || 
-        !req.body.description ||
-        !req.body.location || 
-        !req.body.contact || 
-        !req.body.whatsapp ||
-        !req.body.username ||
-        !req.body.categoryId){
-        return { error: "É necessário preencher todos os campos." };
-    }
-
-    return null;
+    next();
 }
 
 module.exports = {
