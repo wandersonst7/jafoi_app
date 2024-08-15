@@ -131,6 +131,8 @@ const createProduct = async (req, res) => {
         })
 
         if(!newProduct){
+            const pathFile = "uploads\\products\\" + image;
+            deleteImage(pathFile)
             return res.status(400).json({ error: "Não foi possível cadastrar o produto." })
         }
 
@@ -175,10 +177,7 @@ const updateProduct = async (req, res) => {
         }
 
         const image = req.file.filename;
-
-        // excluindo imagem antiga
-        const pathFile = "uploads\\products\\"
-        deleteImage(pathFile + product.image)
+        const oldImage = product.image;
 
         product.title = title,
         product.price = price, 
@@ -193,6 +192,10 @@ const updateProduct = async (req, res) => {
         product.categoryId = categoryId
     
         await product.save();
+
+        // excluindo imagem antiga
+        const pathFile = "uploads\\products\\" + oldImage;
+        deleteImage(pathFile);
 
         res.status(200).json(product)
     } catch (error) {
@@ -216,9 +219,10 @@ const deleteProduct = async (req, res) => {
         }
 
         await Product.findByIdAndDelete(id);
+        
         // excluindo imagem antiga
-        const pathFile = "uploads\\products\\"
-        deleteImage(pathFile + product.image)
+        const pathFile = "uploads\\products\\" + product.image;
+        deleteImage(pathFile)
         
         res.status(200).json({ success:"Produto excluído com sucesso."})
     
