@@ -1,14 +1,17 @@
-const createAndUpdateValidation = (data) => {
+const createAndUpdateValidation = (req, method) => {
 
-    if(!data.title ||
-        !data.price || 
-        !data.description ||
-        !data.location || 
-        !data.contact || 
-        !data.whatsapp || 
-        !data.img ||
-        !data.username ||
-        !data.categoryId){
+    if(!req.file && method === "create"){
+        return { error: "A imagem é obrigatória." };
+    }
+
+    if(!req.body.title ||
+        !req.body.price || 
+        !req.body.description ||
+        !req.body.location || 
+        !req.body.contact || 
+        !req.body.whatsapp ||
+        !req.body.username ||
+        !req.body.categoryId){
         return { error: "É necessário preencher todos os campos." };
     }
 

@@ -9,7 +9,7 @@ const productSchema = new Schema({
     status: Number,
     contact: String,
     whatsapp: String,
-    img: String,
+    image: String,
     userId: mongoose.ObjectId,
     username: String,
     categoryId: mongoose.ObjectId

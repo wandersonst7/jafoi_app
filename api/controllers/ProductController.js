@@ -2,8 +2,12 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 const { createAndUpdateValidation } = require('../middlewares/productValidation');
 
-const searchProducts = (req, res) => {
+const searchProducts = async (req, res) => {
+    const { search } = req.query;
 
+    const products = await Product.find({status: 1, title: new RegExp(search, "i")}).exec();
+
+    res.status(200).json(products)
 }
 
 const buyProduct = async (req, res) => {
@@ -90,19 +94,21 @@ const getProduct = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
+
+    const image = req.file.filename;
+
     const { title,
         price, 
         description,
         location, 
         status,
         contact, 
-        whatsapp, 
-        img,
+        whatsapp,
         username,
         categoryId
     } = req.body;
 
-    const validation = createAndUpdateValidation(req.body);
+    const validation = createAndUpdateValidation(req, "create");
 
     if(validation){
         return res.status(400).json(validation)
@@ -124,7 +130,7 @@ const createProduct = async (req, res) => {
             status,
             contact, 
             whatsapp, 
-            img,
+            image,
             username,
             categoryId,
             userId: req.user._id,
@@ -154,12 +160,11 @@ const updateProduct = async (req, res) => {
         status,
         contact, 
         whatsapp, 
-        img,
         username,
         categoryId,
     } = req.body;
 
-    const validation = createAndUpdateValidation(req.body);
+    const validation = createAndUpdateValidation(req, "update");
 
     if(validation){
         return res.status(400).json(validation)
@@ -188,7 +193,6 @@ const updateProduct = async (req, res) => {
         product.status = status,
         product.contact = contact, 
         product.whatsapp = whatsapp, 
-        product.img = img,
         product.username = username,
         product.userId = req.user._id,
         product.categoryId = categoryId
