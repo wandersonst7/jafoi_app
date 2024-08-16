@@ -5,7 +5,7 @@ const deleteImage = require('../utils/deleteImage');
 const searchProducts = async (req, res) => {
     const { search } = req.query;
 
-    const products = await Product.find({status: 1, title: new RegExp(search, "i")}).exec();
+    const products = await Product.find({status: 1, title: new RegExp(search, "i")}).sort({createdAt : -1}).exec();
 
     res.status(200).json(products)
 }

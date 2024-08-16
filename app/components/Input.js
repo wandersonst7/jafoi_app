@@ -1,12 +1,11 @@
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View, Pressable } from "react-native";
 import { BLACK, ORANGE, PLACEHOLDER_COLOR } from "../styles";
 import MaskInput from 'react-native-mask-input';
 
 // Icons
 import Feather from '@expo/vector-icons/Feather';
 
-
-export default function Input({ type = "", maskInput = false, search = false, mask, autoFocus = false, placeholder, password = false, onChange, value }){
+export default function Input({ type = "", maskInput = false, search = false, mask, autoFocus = false, placeholder, password = false, onChange, value, onSearch }){
 
   if(maskInput){
     return (
@@ -35,7 +34,9 @@ export default function Input({ type = "", maskInput = false, search = false, ma
         value={value}
         inputMode={type}
       />
-      <Feather name="search" size={24} color={ORANGE} />
+      <Pressable onPress={() => onSearch()}>
+        <Feather name="search" size={24} color={ORANGE} />
+      </Pressable>
     </View> 
 
   }else{

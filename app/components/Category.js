@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { ORANGE, WHITE } from "../styles";
 import { StyleSheet, Pressable, Text } from "react-native";
 
-export default function Categories({ name, onPress, active }){
+export default function Category({ id, name, onPress, active }){
 
   if(active){
-    return <Pressable style={styles.active} onPress={onPress}>
+    return <Pressable style={styles.active} onPress={() => onPress(id)}>
         <Text style={styles.text_active}>{ name }</Text>
     </Pressable>
   }else{
-    return <Pressable style={styles.button} onPress={onPress}>
+    return <Pressable style={styles.button} onPress={() => onPress(id)}>
         <Text style={styles.text}>{ name }</Text>
     </Pressable>
   }

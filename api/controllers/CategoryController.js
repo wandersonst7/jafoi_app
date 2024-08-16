@@ -116,7 +116,7 @@ const deleteCategory = async (req, res) => {
     try {
 
         const category = await Category.findById(id)
-        const productsByCategory = await Product.find();
+        const productsByCategory = await Product.find({ categoryId: id});
 
         if(category.userId.toString() !== req.user._id.toString() && req.user.role !== "ADMIN"){
             res.status(403).json({
@@ -125,7 +125,7 @@ const deleteCategory = async (req, res) => {
             return;
         }
 
-        if(productsByCategory){
+        if(productsByCategory.length > 0){
             res.status(400).json({
                 error: "Não é possível excluir esta categoria porque contém produtos."
             })

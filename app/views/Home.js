@@ -1,15 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { getCategories } from '../requests/CategoriesRequest';
+import { searchProducts, getProductsByCategory, getAllAvailableProducts } from '../requests/ProductsRequest';
 
 // Styles
-import { global_styles, ORANGE,  } from '../styles';
+import { global_styles, ORANGE, BLACK } from '../styles';
 
 // Components
 import Input from '../components/Input';
-import Categories from '../components/Categories';
+import Category from '../components/Category';
 
 // Icons
 import Feather from '@expo/vector-icons/Feather';
@@ -18,7 +20,14 @@ import Feather from '@expo/vector-icons/Feather';
 export default function Home() {
 
   // States
-  const [search, setSearch] = useState();
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState(null);
+  const [products, setProducts] = useState(null);
+
+  // States Filtro Categoria
+  const [activeCategory, setActiveCategory] = useState(false);
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
 
   // Context
   const { user, token, logout, setAuthError } = useAuth();
@@ -26,44 +35,106 @@ export default function Home() {
   // Navigation
   const navigation = useNavigation();
 
-  // Get data (test)
-  // useFocusEffect(
-  //   useCallback(() => {
+  useFocusEffect(
+    useCallback(() => {
 
-  //     (async () => {
+      (async () => {
 
-  //       try{
+        try{
+
+          if(!search){
+            setLoading(true)
+
+            const respCategories = await getCategories(token)
+            
+            let respProducts;
+            if(activeCategory){
+              respProducts = await getProductsByCategory(token, activeCategoryId)
+            }else{
+              respProducts = await getAllAvailableProducts(token)
+            }
   
-  //         const resp = await fetch('http://10.0.0.183:4000/private', {
-  //           method: "GET",
-  //           headers: {
-  //             "Authorization": `Bearer ${ token }`
-  //           }
-  //         })
-
-  //         if(resp.status === 401){
-  //           await logout()
-  //           setAuthError("A sessão expirou.")
-  //           navigation.navigate("Login");
-  //           return;
-  //         }
+            if(respCategories.status === 401 || respProducts.status === 401){
+              await logout()
+              setAuthError("A sessão expirou.")
+              navigation.navigate("Login");
+              return;
+            }
+      
+            const jsonCategories = await respCategories.json();
+            const jsonProducts = await respProducts.json();
     
-  //         const json = await resp.json();
+            if(jsonCategories.length > 0){
+              setCategories(jsonCategories)
+            }
   
-  //         console.log(json)
+            if(jsonProducts.length > 0){
+              setProducts(jsonProducts)
+            }  
+          }
+      
+        }catch(err){
+          console.log(err)
+        }finally{
+          setLoading(false)
+        }
   
-  //       }catch(err){
-  //         console.log(err)
-  //       }
-  
-  //     })()
+      })()
 
-  //   }, [logout, token])
-  // )
-
-  const filterCategory = () => {
-    console.log("Filtrando")
+    }, [
+      logout, 
+      token,
+      activeCategory, 
+      activeCategoryId,
+    ])
+  )
+  
+  const filterCategory = (categoryId) => {
+    if(categoryId === activeCategoryId && activeCategory){
+      setActiveCategory(false)
+      setActiveCategoryId(null)
+    }else{
+      // Esvaziando busca
+      setSearch("")
+      setActiveCategoryId(categoryId)
+      setActiveCategory(true)
+    }
   }
+
+  const onSearch = async () => {
+      let respProducts = null;
+
+      try {
+        setLoading(true)
+
+        respProducts = await searchProducts(token, search)
+  
+        const jsonProducts = await respProducts.json();
+        if(jsonProducts.length > 0){
+          setProducts(jsonProducts)
+        }else{
+          setProducts(null)
+        }
+
+        // Desmarcando a categoria
+        setActiveCategory(false)
+        setActiveCategoryId(null)
+
+      } catch (error) {
+        console.log(error)
+      }finally{
+        setLoading(false)
+      }
+  }
+
+    // Exibindo Loading
+    if(loading){
+        return (
+          <View style={global_styles.container}>
+            <ActivityIndicator size="large" color={ ORANGE } />
+          </View>
+        )
+    }
 
   return (
       <SafeAreaView style={styles.container}>
@@ -72,6 +143,7 @@ export default function Home() {
         <View style={{ marginBottom: 44, width: '100%'}}>
           <Input
             search={true}
+            onSearch={onSearch}
             autoFocus={false} 
             onChange={setSearch} 
             value={search} 
@@ -84,12 +156,17 @@ export default function Home() {
         </View>
 
         <ScrollView showsHorizontalScrollIndicator={false} style={{ marginBottom: 44 }} horizontal={true}>
-          <Categories name="Roupas" active={true} onPress={filterCategory}/>
-          <Categories name="Carro" onPress={filterCategory}/>
-          <Categories name="Mesa" onPress={filterCategory}/>
-          <Categories name="Banho" onPress={filterCategory}/>
-          <Categories name="Futebol" onPress={filterCategory}/>
-          <Categories name="Eletronicos" onPress={filterCategory}/>
+          {categories && categories.map((category) => (
+
+            activeCategoryId === category._id ? 
+              <Category key={category._id} id={category._id} name={category.name} active={true} onPress={filterCategory}/>
+            : (
+              <Category key={category._id} id={category._id} name={category.name} onPress={filterCategory}/>
+            )
+            
+          ))}
+
+          {!categories && <Text style={{ textAlign: 'center', color: BLACK }}>Não há categorias.</Text>}
         </ScrollView>
 
         <View style={styles.container_topics}>
@@ -98,26 +175,11 @@ export default function Home() {
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 44 }}>
-          <Categories name="Roupas" active={true} onPress={filterCategory}/>
-          <Categories name="Carro" onPress={filterCategory}/>
-          <Categories name="Mesa" onPress={filterCategory}/>
-          <Categories name="Banho" onPress={filterCategory}/>
-          <Categories name="Futebol" onPress={filterCategory}/>
-          <Categories name="Eletronicos" onPress={filterCategory}/>
-          <Categories name="Roupas" active={true} onPress={filterCategory}/>
-          <Categories name="Carro" onPress={filterCategory}/>
-          <Categories name="Mesa" onPress={filterCategory}/>
-          <Categories name="Banho" onPress={filterCategory}/>
-          <Categories name="Futebol" onPress={filterCategory}/>
-          <Categories name="Eletronicos" onPress={filterCategory}/>
-          <Categories name="Roupas" active={true} onPress={filterCategory}/>
-          <Categories name="Carro" onPress={filterCategory}/>
-          <Categories name="Mesa" onPress={filterCategory}/>
-          <Categories name="Banho" onPress={filterCategory}/>
-          <Categories name="Futebol" onPress={filterCategory}/>
-          <Categories name="Eletronicos" onPress={filterCategory}/>
+          {products && products.map((product) => (
+              <Text key={product._id} >{product.title}</Text>
+            ))}
+          {!products && <Text style={{ textAlign: 'center', color: BLACK }}>Não há produtos anunciados.</Text>}
         </ScrollView>
-        
 
         </ScrollView>
         <StatusBar style="auto" />
