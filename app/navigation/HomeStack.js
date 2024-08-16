@@ -6,7 +6,9 @@ import { useAuth } from '../context/AuthContext';
 import Login from '../views/Login';
 import Register from '../views/Register';
 import Home from '../views/Home';
-import Product from '../views/Product';
+
+// Auth Pages
+import ListProduct from '../views/Products/ListProduct'
 
 const HomeStack = createNativeStackNavigator();
 
@@ -15,7 +17,6 @@ const HomeStackNavigator = () => {
   const { user, token } = useAuth();
 
   return (
-    
     <HomeStack.Navigator screenOptions={{
       headerShown: false,
       header: () => null,
@@ -25,7 +26,7 @@ const HomeStackNavigator = () => {
       {user && token ? (
         <>
           <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home} />
-          <HomeStack.Screen options={{headerShown: false}} name="Produto" component={Product} />
+          <HomeStack.Screen options={{headerShown: false}} name="ListProduct" component={ListProduct} />
         </>
       ): (
         <> 

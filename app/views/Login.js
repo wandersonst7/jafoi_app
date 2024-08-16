@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, Image, Pressable, ActivityIndicator } from "react-native";
 import { global_styles, BLACK, LINKS_COLOR, ORANGE } from "../styles";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useAuth } from "../context/AuthContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,7 +15,7 @@ import RequestMessage from "../components/RequestMessage";
 export default function Login(){
 
     // Context
-    const { setUser, setToken, login, loading, setLoading, authError } = useAuth();
+    const { setUser, setToken, user, token, login, loading, setLoading, authError } = useAuth();
 
     // Navigation
     const navigation = useNavigation();
@@ -50,7 +50,12 @@ export default function Login(){
         setToken(json.data.token)
         await AsyncStorage.setItem('jfa_token', json.data.token);
         setError("")
-        navigation.navigate('Home');
+
+        // Isso deu certo
+        // if(user && token){
+        //   navigation.navigate('Home');
+        // }
+
       }catch(err){
         console.log(err)
         setError("Ocorreu um erro ao realizar o login.")
@@ -63,6 +68,14 @@ export default function Login(){
     const Register = () => {
       navigation.navigate('Register');
     }
+
+    useFocusEffect(
+      useCallback(() => {
+        if (user && token) {
+          navigation.navigate('Home');
+        }
+      }, [user, token, navigation])
+    );
 
     // Exibindo Loading
     if(loading){

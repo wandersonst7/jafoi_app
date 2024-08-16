@@ -47,19 +47,11 @@ export default function Home() {
     }, [logout, token])
   )
 
-  const Produto = () => {
-    navigation.navigate("Produto");
-  }
-
   return (
     <View style={styles.container}>
-      <Text>Página Home</Text>
-      <Pressable onPress={async () => await logout()}>
-        <Text style={{ color: '#00ff00', fontWeight: '700' }}>Logout</Text>
-      </Pressable>
-      <Pressable onPress={() => Produto()}>
-        <Text style={{ color: '#00ff00', fontWeight: '700' }}>Página de produtos</Text>
-      </Pressable>
+      <Text>Home</Text>
+      <Text>Categorias</Text>
+      <Text>Últimos Anúncios</Text>
       <StatusBar style="auto" />
     </View>
   );
