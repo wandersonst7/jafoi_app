@@ -14,7 +14,7 @@ export const global_styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 44
+        padding: 44
     },
     title: {
         fontSize: 27,

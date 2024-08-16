@@ -10,6 +10,7 @@ import Home from '../views/Home';
 // Auth Pages
 import ProductList from '../views/Products/ProductList'
 import ProductDetails from '../views/Products/ProductDetails';
+import CategoryList from '../views/Categories/CategoryList';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -29,6 +30,13 @@ const HomeStackNavigator = () => {
           <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home} />
           <HomeStack.Screen options={{headerShown: false}} name="ProductList" component={ProductList} />
           <HomeStack.Screen options={{headerShown: false}} name="ProductDetails" component={ProductDetails} />
+
+          { user.role === "ADMIN" && (
+              <> 
+                <HomeStack.Screen options={{headerShown: false}} name="CategoryList" component={CategoryList} />
+              </>
+          )}
+
         </>
       ): (
         <> 

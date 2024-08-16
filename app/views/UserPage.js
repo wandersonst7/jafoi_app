@@ -1,11 +1,14 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
+
+// Components
+import ButtonComponent from '../components/ButtonComponent';
 
 export default function UserPage() {
 
     // Context
-    const { user, token, logout, setAuthError } = useAuth();
+    const { user, logout } = useAuth();
 
   // Navigation
   const navigation = useNavigation();
@@ -14,15 +17,27 @@ export default function UserPage() {
     navigation.navigate("ProductList");
   }
 
+  const CategoryList = () => {
+    navigation.navigate("CategoryList");
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Página do Usuário</Text>
-      <Pressable style={{ margin: 8, backgroundColor: '#ff6600', padding: 10, borderRadius: 16 }} onPress={async () => await logout()}>
-        <Text style={{ color: '#fff', fontWeight: '700' }}>Logout</Text>
-      </Pressable>
-      <Pressable style={{ margin: 8, backgroundColor: '#ff6600', padding: 10, borderRadius: 16 }} onPress={() => ProductList() }>
-        <Text style={{ color: '#fff', fontWeight: '700' }}>Meus Anúncios</Text>
-      </Pressable>
+
+      <View style={{ marginBottom: 34, width: '100%'}}>
+        <ButtonComponent onPress={ProductList} text="Meus Produtos"/>
+      </View>
+
+      { user.role === "ADMIN" && (
+        <View style={{ marginBottom: 34, width: '100%'}}>
+          <ButtonComponent onPress={CategoryList} text="Categorias"/>
+        </View>
+      )}
+
+      <View style={{ marginBottom: 34, width: '100%'}}>
+        <ButtonComponent text="Logout" onPress={ logout } outline={true}/>
+      </View>
+
     </View>
   );
 }
@@ -33,5 +48,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 44
   },
 });
