@@ -67,11 +67,16 @@ export default function Home() {
     
             if(jsonCategories.length > 0){
               setCategories(jsonCategories)
+            }else{
+              setCategories(null)
             }
   
             if(jsonProducts.length > 0){
               setProducts(jsonProducts)
-            }  
+            }else{
+              setProducts(null)
+            }
+
           }
       
         }catch(err){
@@ -109,6 +114,13 @@ export default function Home() {
         setLoading(true)
 
         respProducts = await searchProducts(token, search)
+
+        if(respProducts.status === 401){
+          await logout()
+          setAuthError("A sessão expirou.")
+          navigation.navigate("Login");
+          return;
+        }
   
         const jsonProducts = await respProducts.json();
         if(jsonProducts.length > 0){

@@ -7,6 +7,7 @@ export const BLACK = "#333333";
 export const ORANGE = "#EB7330";
 export const PLACEHOLDER_COLOR = "#555555";
 export const LINKS_COLOR = "#1C42A3";
+export const RED = "#EB3030";
 
 export const global_styles = StyleSheet.create({
     container: {

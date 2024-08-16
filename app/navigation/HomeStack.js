@@ -11,6 +11,7 @@ import Home from '../views/Home';
 import ProductList from '../views/Products/ProductList'
 import ProductDetails from '../views/Products/ProductDetails';
 import CategoryList from '../views/Categories/CategoryList';
+import CategoryEdit from '../views/Categories/CategoryEdit';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ const HomeStackNavigator = () => {
           { user.role === "ADMIN" && (
               <> 
                 <HomeStack.Screen options={{headerShown: false}} name="CategoryList" component={CategoryList} />
+                <HomeStack.Screen options={{headerShown: false}} name="CategoryEdit" component={CategoryEdit} />
               </>
           )}
 

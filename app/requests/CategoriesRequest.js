@@ -9,4 +9,22 @@ const getCategories = async (token) => {
     })
 }
 
-export { getCategories }
+const getCategory = async (token, id) => {
+    return await fetch(url + '/categories/' + id, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${ token }`
+        }
+    })
+}
+
+const deleteCategory = async (token, id) => {
+    return await fetch(url + '/categories/' + id, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${ token }`
+        }
+    })
+}
+
+export { getCategories, getCategory, deleteCategory }
