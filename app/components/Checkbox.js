@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import { BLACK } from "../styles";
 import Feather from '@expo/vector-icons/Feather';
 
-
 export default function Checkbox({ text, checked, setChecked }){
 
     if(checked){

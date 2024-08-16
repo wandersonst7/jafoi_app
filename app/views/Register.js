@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from "../components/Input"
 import ButtonComponent from "../components/ButtonComponent";
 import RequestMessage from "../components/RequestMessage";
+import Loading from "../components/Loading";
 
 export default function Register(){
 
@@ -64,11 +65,7 @@ export default function Register(){
 
     // Exibindo Loading
     if(loading){
-      return (
-        <View style={global_styles.container}>
-          <ActivityIndicator size="large" color={ ORANGE } />
-        </View>
-      )
+      return <Loading />
     }
 
   return (

@@ -13,7 +13,7 @@ import { useAuth } from '../context/AuthContext';
 import HomeStackNavigator from './HomeStack';
 
 // Pages Auth
-import AddProduct from '../views/Products/AddProduct'
+import ProductAdd from '../views/Products/ProductAdd'
 import UserPage from '../views/UserPage'
 
 const Tab = createBottomTabNavigator();
@@ -44,7 +44,7 @@ const TabNavigation = () => {
           })}
           />
           <Tab.Screen name="Anunciar" 
-          component={AddProduct} 
+          component={ProductAdd} 
           options={({ route }) => ({
             tabBarIcon: () => {
               return <AntDesign name="plussquareo" size={34} color="#ffffff" />

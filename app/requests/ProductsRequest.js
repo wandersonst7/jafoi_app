@@ -27,4 +27,13 @@ const getAllAvailableProducts = async (token) => {
     })
 }
 
-export { searchProducts, getProductsByCategory, getAllAvailableProducts }
+const getProduct = async (token, id) => {
+    return await fetch(url + '/products/' + id, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${ token }`
+        }
+    })
+}
+
+export { searchProducts, getProductsByCategory, getAllAvailableProducts, getProduct }

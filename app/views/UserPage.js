@@ -10,8 +10,8 @@ export default function UserPage() {
   // Navigation
   const navigation = useNavigation();
 
-  const ListProduct = () => {
-    navigation.navigate("ListProduct");
+  const ProductList = () => {
+    navigation.navigate("ProductList");
   }
 
   return (
@@ -20,7 +20,7 @@ export default function UserPage() {
       <Pressable style={{ margin: 8, backgroundColor: '#ff6600', padding: 10, borderRadius: 16 }} onPress={async () => await logout()}>
         <Text style={{ color: '#fff', fontWeight: '700' }}>Logout</Text>
       </Pressable>
-      <Pressable style={{ margin: 8, backgroundColor: '#ff6600', padding: 10, borderRadius: 16 }} onPress={() => ListProduct() }>
+      <Pressable style={{ margin: 8, backgroundColor: '#ff6600', padding: 10, borderRadius: 16 }} onPress={() => ProductList() }>
         <Text style={{ color: '#fff', fontWeight: '700' }}>Meus Anúncios</Text>
       </Pressable>
     </View>

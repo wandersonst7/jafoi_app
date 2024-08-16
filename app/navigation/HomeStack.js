@@ -8,7 +8,8 @@ import Register from '../views/Register';
 import Home from '../views/Home';
 
 // Auth Pages
-import ListProduct from '../views/Products/ListProduct'
+import ProductList from '../views/Products/ProductList'
+import ProductDetails from '../views/Products/ProductDetails';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -26,7 +27,8 @@ const HomeStackNavigator = () => {
       {user && token ? (
         <>
           <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home} />
-          <HomeStack.Screen options={{headerShown: false}} name="ListProduct" component={ListProduct} />
+          <HomeStack.Screen options={{headerShown: false}} name="ProductList" component={ProductList} />
+          <HomeStack.Screen options={{headerShown: false}} name="ProductDetails" component={ProductDetails} />
         </>
       ): (
         <> 

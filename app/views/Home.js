@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
+import { StyleSheet, FlatList, Text, View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
@@ -12,10 +12,11 @@ import { global_styles, ORANGE, BLACK } from '../styles';
 // Components
 import Input from '../components/Input';
 import Category from '../components/Category';
+import ProductItem from '../components/ProductItem';
+import Loading from '../components/Loading';
 
 // Icons
 import Feather from '@expo/vector-icons/Feather';
-
 
 export default function Home() {
 
@@ -127,13 +128,13 @@ export default function Home() {
       }
   }
 
+  const ProductDetails = (id) => {
+    navigation.navigate("ProductDetails", { id: id})
+  }
+
     // Exibindo Loading
     if(loading){
-        return (
-          <View style={global_styles.container}>
-            <ActivityIndicator size="large" color={ ORANGE } />
-          </View>
-        )
+        return <Loading />
     }
 
   return (
@@ -176,7 +177,14 @@ export default function Home() {
 
         <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 44 }}>
           {products && products.map((product) => (
-              <Text key={product._id} >{product.title}</Text>
+              <ProductItem key={product._id}
+                id={product._id} 
+                image={product.image} 
+                title={product.title} 
+                username={product.username}
+                location={product.location}
+                onPress={ ProductDetails } 
+              />
             ))}
           {!products && <Text style={{ textAlign: 'center', color: BLACK }}>Não há produtos anunciados.</Text>}
         </ScrollView>
