@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: ORANGE,
         borderWidth: 1,
-        borderRadius: 16,
+        borderRadius: 24,
         borderColor: ORANGE,
-        padding: 16,
+        padding: 13,
     },
     text: {
         color: WHITE,

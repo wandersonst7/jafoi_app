@@ -48,13 +48,13 @@ export default function Login(){
 
         setUser(json.data.user)
         setToken(json.data.token)
-        await AsyncStorage.setItem('jfa_token', json.data.token);
-        setError("")
 
-        // Isso deu certo
-        // if(user && token){
-        //   navigation.navigate('Home');
-        // }
+        // Se ele clicar em manter conectado
+        if(data.keepAlive){
+          await AsyncStorage.setItem('jfa_token', json.data.token);
+        }
+        
+        setError("")
 
       }catch(err){
         console.log(err)

@@ -25,8 +25,10 @@ const TabNavigation = () => {
   if(user && token){
     return (
         <Tab.Navigator initialRouteName="Inicio" screenOptions={({ route }) => ({
+          // title: '',
           headerTitleAlign: 'center',
           headerTintColor: '#333333',
+          // headerShadowVisible: false, 
           tabBarStyle: { 
             backgroundColor: '#EB7330',
             height: 65,

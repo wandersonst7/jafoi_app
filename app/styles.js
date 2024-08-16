@@ -14,11 +14,17 @@ export const global_styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 45
+        margin: 44
     },
     title: {
         fontSize: 27,
         fontWeight: '700',
         color: BLACK,
     },
+    topics_orange: {
+        color: ORANGE,
+        fontSize: 21,
+        fontWeight: '700',
+        marginRight: 8
+    }
 });

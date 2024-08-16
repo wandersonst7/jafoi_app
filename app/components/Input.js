@@ -1,9 +1,12 @@
-import { StyleSheet, TextInput } from "react-native";
-import { BLACK, PLACEHOLDER_COLOR } from "../styles";
+import { StyleSheet, TextInput, View } from "react-native";
+import { BLACK, ORANGE, PLACEHOLDER_COLOR } from "../styles";
 import MaskInput from 'react-native-mask-input';
 
-export default function Input({ type = "", maskInput = false, mask, autoFocus = false, placeholder, password = false, onChange, value }){
+// Icons
+import Feather from '@expo/vector-icons/Feather';
 
+
+export default function Input({ type = "", maskInput = false, search = false, mask, autoFocus = false, placeholder, password = false, onChange, value }){
 
   if(maskInput){
     return (
@@ -20,6 +23,21 @@ export default function Input({ type = "", maskInput = false, mask, autoFocus = 
           inputMode={type}
       />
     )
+  }else if(search){
+
+    return <View style={styles.search}>
+        <TextInput
+        autoFocus={autoFocus}
+        placeholder={placeholder}
+        placeholderTextColor={ORANGE}
+        secureTextEntry={password} 
+        onChangeText={text => onChange(text)}
+        value={value}
+        inputMode={type}
+      />
+      <Feather name="search" size={24} color={ORANGE} />
+    </View> 
+
   }else{
     return (
       <TextInput
@@ -42,8 +60,19 @@ const styles = StyleSheet.create({
         width: '100%',
         borderWidth: 1,
         borderColor: BLACK,
-        borderRadius: 16,
-        padding: 16,
+        borderRadius: 24,
+        paddingVertical: 12,
+        paddingHorizontal: 24,
     },
+    search: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+      borderWidth: 1,
+      borderColor: ORANGE,
+      borderRadius: 24,
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+  },
   });
   
