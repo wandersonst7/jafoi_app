@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { ORANGE, WHITE } from "../styles";
+import { ORANGE, WHITE, GREY } from "../styles";
 import { StyleSheet, Pressable, Text } from "react-native";
 
 export default function Category({ id, name, onPress, active }){
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
         backgroundColor: WHITE,
         borderWidth: 1,
         borderRadius: 24,
-        borderColor: ORANGE,
+        borderColor: GREY,
         paddingVertical: 8,
         paddingHorizontal: 20,
         marginRight: 16
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
       marginRight: 16
   },
   text: {
-      color: ORANGE,
+      color: GREY,
       fontWeight: '700',
       textAlign: 'center'
   },

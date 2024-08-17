@@ -1,6 +1,6 @@
 import { StyleSheet, View, Image, Pressable, Text } from "react-native";
 import { uploads } from "../services/api";
-import { BLACK, ORANGE, WHITE } from "../styles";
+import { BLACK, ORANGE, WHITE, GREY } from "../styles";
 
 // Icons
 import Feather from '@expo/vector-icons/Feather';
@@ -15,11 +15,11 @@ export default function ProductItem({ id, image, title, username, location, onPr
         <View style={styles.container_info}>
             <Text numberOfLines={1} style={styles.title}>{title}</Text>
             <View numberOfLines={1} style={styles.item_info}>
-                <Feather name="map-pin" size={20} color={ORANGE} />
-                <Text numberOfLines={1} style={{...styles.text_item_info }}>{location}</Text>
+                <Feather name="map-pin" size={20} color={GREY} />
+                <Text numberOfLines={1} style={styles.text_item_info}>{location}</Text>
             </View>
             <View numberOfLines={1} style={styles.item_info}>
-                <Feather name="user" size={20} color={ORANGE} />
+                <Feather name="user" size={20} color={GREY} />
                 <Text numberOfLines={1} style={styles.text_item_info}>{username}</Text>
             </View>
             <Pressable style={styles.btn_datails} onPress={() => onPress(id)}>
@@ -32,10 +32,19 @@ export default function ProductItem({ id, image, title, username, location, onPr
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        width: '98%',
         borderRadius: 16,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: WHITE,
+        shadowColor: GREY,
+        shadowOffset: {
+        width: 0,
+        height: 3,
+        },
+        shadowOpacity:  0.17,
+        shadowRadius: 3.05,
+        elevation: 4,
         marginBottom: 24,
+        alignSelf: 'center',
     },
     container_info: {
         padding: 24
@@ -53,9 +62,9 @@ const styles = StyleSheet.create({
     },
     text_item_info: {
         marginLeft: 4,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: '700',
-        color: ORANGE,
+        color: GREY,
     },
     image: {
         width: '100%',
@@ -72,6 +81,14 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         paddingVertical: 8,
         paddingHorizontal: 20,
+        shadowColor: "#000000",
+        shadowOffset: {
+        width: 0,
+        height: 2,
+        },
+        shadowOpacity:  0.17,
+        shadowRadius: 2.54,
+        elevation: 3
     },
     text_btn_details: {
         color: WHITE,

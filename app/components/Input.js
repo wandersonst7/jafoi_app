@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, View, Pressable } from "react-native";
-import { BLACK, ORANGE, PLACEHOLDER_COLOR } from "../styles";
+import { BLACK, ORANGE, PLACEHOLDER_COLOR, GREY } from "../styles";
 import MaskInput from 'react-native-mask-input';
 
 // Icons
@@ -28,14 +28,14 @@ export default function Input({ type = "", maskInput = false, search = false, ma
         <TextInput
         autoFocus={autoFocus}
         placeholder={placeholder}
-        placeholderTextColor={ORANGE}
+        placeholderTextColor={GREY}
         secureTextEntry={password} 
         onChangeText={text => onChange(text)}
         value={value}
         inputMode={type}
       />
       <Pressable onPress={() => onSearch()}>
-        <Feather name="search" size={24} color={ORANGE} />
+        <Feather name="search" size={24} color={GREY} />
       </Pressable>
     </View> 
 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
       width: '100%',
       borderWidth: 1,
-      borderColor: ORANGE,
+      borderColor: GREY,
       borderRadius: 24,
       paddingVertical: 12,
       paddingHorizontal: 24,
