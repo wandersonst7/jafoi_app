@@ -10,6 +10,7 @@ import { deleteCategory } from '../../requests/CategoriesRequest';
 import Loading from '../../components/Loading';
 import CategoryItemList from '../../components/CategoryItemList';
 import RequestMessage from '../../components/RequestMessage';
+import ButtonComponent from '../../components/ButtonComponent';
 
 export default function CategoryList() {
 
@@ -96,6 +97,10 @@ export default function CategoryList() {
       }
     }
 
+    const CategoryNew = () => {
+      navigation.navigate("CategoryNew");
+    }
+
     // Exibindo Loading
     if(loading){
         return <Loading />
@@ -106,6 +111,10 @@ export default function CategoryList() {
         <ScrollView style={styles.scrollview} showsVerticalScrollIndicator={false}>
 
         <Text style={{...global_styles.title, textAlign: 'center', marginBottom: 24}}>Categorias</Text>
+        
+        <View style={{ marginBottom: 24, width: '50%', marginHorizontal: 'auto'}}>
+            <ButtonComponent text="Cadastrar" onPress={ CategoryNew } outline={true}/>
+        </View>
 
         { error && (
           <View style={{ marginBottom: 24, width: '100%'}}>

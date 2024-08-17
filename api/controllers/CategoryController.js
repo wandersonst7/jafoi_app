@@ -85,6 +85,13 @@ const updateCategory = async (req, res) => {
     }
 
     try {
+
+        const categoryExists = await Category.findOne({ name });
+
+        if(categoryExists) {
+            return res.status(400).json({error: "Esta categoria já existe."});
+        }
+
         const category = await Category.findById(id);
 
         if(category.userId.toString() !== req.user._id.toString() && req.user.role !== "ADMIN"){

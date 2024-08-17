@@ -12,6 +12,7 @@ import ProductList from '../views/Products/ProductList'
 import ProductDetails from '../views/Products/ProductDetails';
 import CategoryList from '../views/Categories/CategoryList';
 import CategoryEdit from '../views/Categories/CategoryEdit';
+import CategoryNew from '../views/Categories/CategoryNew';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ const HomeStackNavigator = () => {
               <> 
                 <HomeStack.Screen options={{headerShown: false}} name="CategoryList" component={CategoryList} />
                 <HomeStack.Screen options={{headerShown: false}} name="CategoryEdit" component={CategoryEdit} />
+                <HomeStack.Screen options={{headerShown: false}} name="CategoryNew" component={CategoryNew} />
               </>
           )}
 

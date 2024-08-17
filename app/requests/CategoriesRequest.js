@@ -27,4 +27,26 @@ const deleteCategory = async (token, id) => {
     })
 }
 
-export { getCategories, getCategory, deleteCategory }
+const createCategory = async (token, data) => {
+    return await fetch(url + '/categories', {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${ token }`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+}
+
+const updateCategory = async (token, data, id) => {
+    return await fetch(url + '/categories/' + id, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${ token }`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+}
+
+export { getCategories, getCategory, deleteCategory, createCategory, updateCategory }
