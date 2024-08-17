@@ -25,41 +25,55 @@ const TabNavigation = () => {
   if(user && token){
     return (
         <Tab.Navigator initialRouteName="Inicio" screenOptions={({ route }) => ({
-          // title: '',
+          title: '',
           headerTitleAlign: 'center',
           headerTintColor: '#333333',
-          // headerShadowVisible: false, 
-          tabBarStyle: { 
-            backgroundColor: '#EB7330',
+          headerShadowVisible: false, 
+          headerStyle: {
+            height: 44
+          },
+          tabBarStyle: {
+            backgroundColor: '#ffffff',
             height: 65,
+            paddingVertical: 5,
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            marginBottom: 5,
           },
         })}>
           <Tab.Screen name="Inicio"
           component={ HomeStackNavigator }
           options={({ route }) => ({
-            tabBarIcon: () => {
-              return <Ionicons name="home" size={28} color="#ffffff" />;
+            tabBarIcon: ({ color }) => {
+              return <Ionicons name="home" size={28} color={color} />;
             },
-            tabBarLabel: () => null,
+            tabBarLabel: "Home",
+            tabBarActiveTintColor: '#EB7330',
+            tabBarInactiveTintColor: '#777777',
           })}
           />
           <Tab.Screen name="Anunciar" 
           component={ProductAdd} 
           options={({ route }) => ({
-            tabBarIcon: () => {
-              return <AntDesign name="plussquareo" size={34} color="#ffffff" />
+            tabBarIcon: ({ color }) => {
+              return <AntDesign name="plussquareo" size={28} color={color} />
             },
-            tabBarLabel: () => null,
+            tabBarLabel: "Anúncio",
+            tabBarActiveTintColor: '#EB7330',
+            tabBarInactiveTintColor: '#777777',
           })
           }
           />
           <Tab.Screen name="Conta"
           component={UserPage} 
           options={({ route }) => ({
-            tabBarIcon: () => {
-              return <Feather name="user" size={28} color="#ffffff" />;
+            tabBarIcon: ({color}) => {
+              return <Feather name="user" size={28} color={color} />;
             },
-            tabBarLabel: () => null,
+            tabBarLabel: "Conta",
+            tabBarActiveTintColor: '#EB7330',
+            tabBarInactiveTintColor: '#777777'
           })
           }
           />
