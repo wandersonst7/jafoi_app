@@ -13,6 +13,10 @@ export default function UserPage() {
   // Navigation
   const navigation = useNavigation();
 
+  const ProductUserList = () => {
+    navigation.navigate("ProductUserList");
+  }
+
   const ProductList = () => {
     navigation.navigate("ProductList");
   }
@@ -24,17 +28,22 @@ export default function UserPage() {
   return (
     <View style={styles.container}>
 
-      <View style={{ marginBottom: 34, width: '100%'}}>
-        <ButtonComponent onPress={ProductList} text="Meus Produtos"/>
+      <View style={{ marginBottom: 24, width: '100%'}}>
+        <ButtonComponent onPress={ProductUserList} text="Meus Produtos"/>
       </View>
 
       { user.role === "ADMIN" && (
-        <View style={{ marginBottom: 34, width: '100%'}}>
+        <>
+        <View style={{ marginBottom: 24, width: '100%'}}>
+          <ButtonComponent onPress={ProductList} text="Todos os Produtos"/>
+        </View>
+        <View style={{ marginBottom: 24, width: '100%'}}>
           <ButtonComponent onPress={CategoryList} text="Categorias"/>
         </View>
+        </>
       )}
 
-      <View style={{ marginBottom: 34, width: '100%'}}>
+      <View style={{ marginBottom: 24, width: '100%'}}>
         <ButtonComponent text="Logout" onPress={ logout } outline={true}/>
       </View>
 

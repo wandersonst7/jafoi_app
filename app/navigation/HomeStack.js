@@ -8,7 +8,9 @@ import Register from '../views/Register';
 import Home from '../views/Home';
 
 // Auth Pages
-import ProductList from '../views/Products/ProductList'
+import ProductList from '../views/Products/ProductList';
+import ProductEdit from '../views/Products/ProductEdit';
+import ProductUserList from '../views/Products/ProductUserList'
 import ProductDetails from '../views/Products/ProductDetails';
 import CategoryList from '../views/Categories/CategoryList';
 import CategoryEdit from '../views/Categories/CategoryEdit';
@@ -30,11 +32,13 @@ const HomeStackNavigator = () => {
       {user && token ? (
         <>
           <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home} />
-          <HomeStack.Screen options={{headerShown: false}} name="ProductList" component={ProductList} />
+          <HomeStack.Screen options={{headerShown: false}} name="ProductUserList" component={ProductUserList} />
           <HomeStack.Screen options={{headerShown: false}} name="ProductDetails" component={ProductDetails} />
+          <HomeStack.Screen options={{headerShown: false}} name="ProductEdit" component={ProductEdit} />
 
           { user.role === "ADMIN" && (
-              <> 
+              <>
+                <HomeStack.Screen options={{headerShown: false}} name="ProductList" component={ProductList} /> 
                 <HomeStack.Screen options={{headerShown: false}} name="CategoryList" component={CategoryList} />
                 <HomeStack.Screen options={{headerShown: false}} name="CategoryEdit" component={CategoryEdit} />
                 <HomeStack.Screen options={{headerShown: false}} name="CategoryNew" component={CategoryNew} />

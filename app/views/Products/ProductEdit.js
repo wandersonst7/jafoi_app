@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function EditProduct() {
+export default function ProductEdit() {
 
   // Navigation
   const navigation = useNavigation();
