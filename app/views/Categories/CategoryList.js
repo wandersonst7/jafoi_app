@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, SafeAreaView } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { useState, useCallback } from 'react';
+import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native';
+import { useState, useCallback, useEffect } from 'react';
 import { getCategories } from '../../requests/CategoriesRequest';
 import { global_styles, BLACK } from '../../styles';
 import { useAuth } from '../../context/AuthContext';
@@ -20,10 +20,12 @@ export default function CategoryList() {
     // States
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [categories, setCategories] = useState(null);
 
     // Navigation
     const navigation = useNavigation();
+    const route = useRoute();
 
     useFocusEffect(
       useCallback(() => {
@@ -58,12 +60,23 @@ export default function CategoryList() {
         })()
 
         setError("")
+
+        if(route.params && route.params.success){
+          setSuccess(route.params.success)
+        }
   
       }, [
         logout, 
         token,
+        route.params
       ])
     )
+
+    useEffect(() => {
+      setTimeout(() => {
+        setSuccess("")
+      }, 3000)
+    }, [success])
 
     const CategoryEdit = (id) => {
       navigation.navigate("CategoryEdit", { id: id })
@@ -89,6 +102,7 @@ export default function CategoryList() {
 
         setCategories(prevCategories => prevCategories.filter(category => category._id !== id));
         setError("")
+        setSuccess('Categoria excluída com sucesso.')
         
       } catch (error) {
         console.log(error)
@@ -119,6 +133,12 @@ export default function CategoryList() {
         { error && (
           <View style={{ marginBottom: 24, width: '100%'}}>
             <RequestMessage status="error" message={error} />
+          </View>
+        )}
+
+        { success && (
+          <View style={{ marginBottom: 24, width: '100%'}}>
+            <RequestMessage status="success" message={success} />
           </View>
         )}
 

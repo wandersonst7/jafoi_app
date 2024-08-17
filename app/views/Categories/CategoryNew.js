@@ -47,7 +47,7 @@ export default function CategoryNew() {
           return;
         }
 
-        navigation.navigate("CategoryList")
+        navigation.navigate("CategoryList", {success: "Categoria cadastrada com sucesso."})
       } catch (error) {
         console.log(error)
       }finally{

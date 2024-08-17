@@ -85,7 +85,7 @@ export default function CategoryEdit() {
         return;
       }
 
-      navigation.navigate("CategoryList")
+      navigation.navigate("CategoryList", {success: "Categoria editada com sucesso."})
     } catch (error) {
       console.log(error)
     }finally{
