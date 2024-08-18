@@ -73,7 +73,7 @@ export default function Login(){
     useFocusEffect(
       useCallback(() => {
         if (user && token) {
-          navigation.navigate('Home');
+          navigation.navigate('Inicio');
         }
       }, [user, token, navigation])
     );

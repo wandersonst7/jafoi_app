@@ -34,9 +34,9 @@ export const AuthContextProvider = ({ children }) => {
     }
 
     const logout = async () => {
+        await AsyncStorage.removeItem('jfa_token');
         setUser(null);
         setToken(null);
-        await AsyncStorage.removeItem('jfa_token');
     }
 
     const tokenVerify = async (data) => {
