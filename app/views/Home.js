@@ -192,7 +192,8 @@ export default function Home() {
               <ProductItem key={product._id}
                 id={product._id} 
                 image={product.image} 
-                title={product.title} 
+                title={product.title}
+                price={product.price} 
                 username={product.username}
                 location={product.location}
                 onPress={ ProductDetails } 

@@ -37,17 +37,15 @@ export default function ProductDetails() {
                     }
             
                     const jsonProduct = await respProduct.json();
-                    console.log(jsonProduct)
           
                     if(jsonProduct._id){
                       setProduct(jsonProduct)
                     }
                     
-                    console.log(product)
                 }
 
             } catch (error) {
-                console.log(error)
+              
             }finally{
                 setLoading(false)
             }

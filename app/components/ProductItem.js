@@ -6,7 +6,7 @@ import { BLACK, ORANGE, WHITE, GREY } from "../styles";
 import Feather from '@expo/vector-icons/Feather';
 
 
-export default function ProductItem({ id, image, title, username, location, onPress }){
+export default function ProductItem({ id, image, title, price, username, location, onPress }){
   return (
     <View style={styles.container}>
         <View style={styles.image}>
@@ -22,9 +22,15 @@ export default function ProductItem({ id, image, title, username, location, onPr
                 <Feather name="user" size={20} color={GREY} />
                 <Text numberOfLines={1} style={styles.text_item_info}>{username}</Text>
             </View>
-            <Pressable style={styles.btn_datails} onPress={() => onPress(id)}>
-                <Text style={styles.text_btn_details}>Detalhes</Text>
-            </Pressable>
+            <View style={styles.container_price_btn_details}>
+                <View style={styles.price}>
+                    <Text style={styles.cifrao}>R$</Text>
+                    <Text style={styles.price_value}>{price}</Text>
+                </View>
+                <Pressable style={styles.btn_details} onPress={() => onPress(id)}>
+                    <Text style={styles.text_btn_details}>Detalhes</Text>
+                </Pressable>
+            </View>
         </View>
     </View>
   )
@@ -74,8 +80,29 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         backgroundColor: 'transparent'
     },
-    btn_datails: {
+    container_price_btn_details: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginTop: 8,
+    },
+    price: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    cifrao: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#AAAAAA',
+        marginTop: 5,
+        marginRight: 4,
+    },
+    price_value: {
+        fontSize: 26,
+        fontWeight: '700',
+        color: "#2F9E41",
+    },
+    btn_details: {
         alignSelf: 'flex-end',
         backgroundColor: ORANGE,
         borderRadius: 24,
