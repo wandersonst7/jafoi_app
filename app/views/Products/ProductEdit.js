@@ -182,7 +182,7 @@ export default function ProductEdit() {
       setCategory(null)
       setImage("")
 
-      navigation.navigate("ProductUserList", {success: "Produto atualizado com sucesso."})
+      navigation.navigate("ProductList", {success: "Produto atualizado com sucesso."})
     } catch (error) {
         if (scrollViewRef.current) {
           scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });

@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native';
 import { useState, useCallback, useEffect } from 'react';
-import { getCategories } from '../../requests/CategoriesRequest';
+import { getCategories, deleteCategory } from '../../requests/CategoriesRequest';
 import { global_styles, BLACK } from '../../styles';
 import { useAuth } from '../../context/AuthContext';
-import { deleteCategory } from '../../requests/CategoriesRequest';
 
 // Components
 import Loading from '../../components/Loading';
@@ -49,6 +48,8 @@ export default function CategoryList() {
 
             if(jsonCategories.length > 0){
               setCategories(jsonCategories)
+            }else{
+              setCategories(null)
             }
         
           }catch(err){
@@ -148,7 +149,7 @@ export default function CategoryList() {
           ))}
         </ScrollView>
       
-        {!categories && <Text style={{ textAlign: 'center', color: BLACK }}>Não foi possível carregar categorias.</Text>}
+        {!categories && <Text style={{ textAlign: 'center', color: BLACK }}>Não foram encontradas categorias.</Text>}
       </ScrollView>
     </SafeAreaView>
   );

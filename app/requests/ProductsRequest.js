@@ -27,6 +27,15 @@ const getAllAvailableProducts = async (token) => {
     })
 }
 
+const getAllProducts = async (token) => {
+    return await fetch(url + '/products/all', {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${ token }`
+        }
+    })
+}
+
 const getProduct = async (token, id) => {
     return await fetch(url + '/products/' + id, {
         method: "GET",
@@ -59,10 +68,21 @@ const updateProduct = async (token, id, data) => {
     })
 }
 
+const deleteProduct = async (token, id) => {
+    return await fetch(url + '/products/' + id, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${ token }`,
+        },
+    })
+}
+
 export { searchProducts, 
     getProductsByCategory, 
-    getAllAvailableProducts, 
+    getAllAvailableProducts,
+    getAllProducts, 
     getProduct, 
     createProduct, 
-    updateProduct
+    updateProduct,
+    deleteProduct
 }

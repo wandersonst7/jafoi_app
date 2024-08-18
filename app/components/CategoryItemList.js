@@ -1,10 +1,29 @@
-import { StyleSheet, View, Pressable, Text } from "react-native";
+import { StyleSheet, View, Pressable, Text, Alert } from "react-native";
 import { BLACK, WHITE, RED, LINKS_COLOR } from "../styles";
 
 // Icons
 import Feather from '@expo/vector-icons/Feather';
 
 export default function CategoryItemList({ id, name, onDelete, edit }){
+
+const handleDelete = () => {
+    Alert.alert(
+        "Confirmar Exclusão",
+        "Você tem certeza que deseja excluir este item?",
+        [
+        {
+            text: "Cancelar",
+            style: "cancel"
+        },
+        {
+            text: "Excluir",
+            onPress: () => onDelete(id),
+            style: "destructive"
+        }
+        ]
+    );
+};
+
   return (
     <View style={styles.container} >
         <View style={styles.titleGroup}>
@@ -15,7 +34,7 @@ export default function CategoryItemList({ id, name, onDelete, edit }){
             <Pressable style={styles.button_edit} onPress={() => edit(id)}>
                 <Feather name="edit" size={24} color={WHITE} />
             </Pressable>
-            <Pressable style={styles.button_delete} onPress={() => onDelete(id)}>
+            <Pressable style={styles.button_delete} onPress={() => handleDelete()}>
                 <Feather name="trash-2" size={24} color={WHITE} />
             </Pressable>
         </View>

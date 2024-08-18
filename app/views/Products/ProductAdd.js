@@ -167,7 +167,7 @@ export default function ProductAdd() {
       setCategory(null)
       setImage("")
 
-      navigation.navigate("ProductUserList", {success: "Produto cadastrado com sucesso."})
+      navigation.navigate("ProductList", {success: "Produto cadastrado com sucesso."})
     } catch (error) {
         if (scrollViewRef.current) {
           scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });

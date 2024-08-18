@@ -5,7 +5,6 @@ import { BLACK, ORANGE, WHITE, GREY } from "../styles";
 // Icons
 import Feather from '@expo/vector-icons/Feather';
 
-
 export default function ProductItem({ id, image, title, price, username, location, onPress }){
   return (
     <View style={styles.container}>
@@ -14,11 +13,11 @@ export default function ProductItem({ id, image, title, price, username, locatio
         </View>
         <View style={styles.container_info}>
             <Text numberOfLines={1} style={styles.title}>{title}</Text>
-            <View numberOfLines={1} style={styles.item_info}>
+            <View style={styles.item_info}>
                 <Feather name="map-pin" size={20} color={GREY} />
                 <Text numberOfLines={1} style={styles.text_item_info}>{location}</Text>
             </View>
-            <View numberOfLines={1} style={styles.item_info}>
+            <View style={styles.item_info}>
                 <Feather name="user" size={20} color={GREY} />
                 <Text numberOfLines={1} style={styles.text_item_info}>{username}</Text>
             </View>
