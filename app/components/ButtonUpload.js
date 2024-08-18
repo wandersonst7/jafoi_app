@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: BLACK,
         borderRadius: 24,
-        paddingVertical: 14,
+        paddingVertical: 12,
         paddingHorizontal: 24,
         flexDirection: 'row',
         justifyContent: 'center'

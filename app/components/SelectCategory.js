@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     dropdownButtonTxtStyle: {
       flex: 1,
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: '500',
       color: BLACK,
     },
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
       borderRadius: 16,
       height: 150,
       paddingVertical: 8,
+      paddingHorizontal: 8,
       overflow: 'hiddden',
       marginBottom: 55
     },
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       paddingVertical: 8,
+      borderRadius: 8,
     },
     dropdownItemTxtStyle: {
       flex: 1,
