@@ -1,6 +1,6 @@
 import { StyleSheet, Image, Text, View, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { global_styles } from '../../styles';
+import { BLACK, global_styles } from '../../styles';
 import { useState, useCallback, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { createProduct } from '../../requests/ProductsRequest';
@@ -107,17 +107,11 @@ export default function ProductAdd() {
       return;
     }
 
-    // Verificar o tamanho da imagem
-    // const MAX_IMAGE_SIZE = 150 * 1024;
-
-
-    // if (image.fileSize > MAX_IMAGE_SIZE) {
-    //   if (scrollViewRef.current) {
-    //       scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
-    //   }
-    //   setError("A imagem deve ter no máximo 150KB.");
-    //   return;
-    // }
+    // Verificando tamanho numero whatsapp
+    if(whatsapp.length !== 15){
+      setError("Insira um número de whatsapp válido.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append('title', title);
@@ -259,9 +253,15 @@ export default function ProductAdd() {
             placeholder="Outro Contato" />
         </View>
 
+        { categories ? (
         <View style={{ marginBottom: 24, width: '100%'}}>
           <SelectCategory data={categories} defaultValue={category} setData={setCategory}/>
         </View>
+        ) : (
+          <View style={{ marginBottom: 24, width: '100%'}}>
+            <Text style={{ textAlign: 'center', color: BLACK }}>Não foram encontradas categorias.</Text>
+          </View>
+        )}
 
         <View style={{ marginBottom: 24, width: '100%'}}>
             <ButtonUpload text="Imagem" onPress={pickImage} />

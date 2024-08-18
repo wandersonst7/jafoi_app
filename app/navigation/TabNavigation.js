@@ -28,7 +28,8 @@ const TabNavigation = () => {
           title: '',
           headerTitleAlign: 'center',
           headerTintColor: '#333333',
-          headerShadowVisible: false, 
+          headerShadowVisible: false,
+          tabBarHideOnKeyboard: true,
           headerStyle: {
             height: 44
           },

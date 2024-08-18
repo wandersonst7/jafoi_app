@@ -130,6 +130,12 @@ export default function ProductEdit() {
       return;
     }
 
+    // Verificando tamanho numero whatsapp
+    if(whatsapp.length !== 15){
+      setError("Insira um número de whatsapp válido.");
+      return;
+    }
+
     if(!product._id){
       if (scrollViewRef.current) {
         scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
