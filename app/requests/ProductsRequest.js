@@ -36,4 +36,33 @@ const getProduct = async (token, id) => {
     })
 }
 
-export { searchProducts, getProductsByCategory, getAllAvailableProducts, getProduct }
+
+const createProduct = async (token, formData) => {
+    return await fetch(url + '/products', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            "Authorization": `Bearer ${ token }`,
+        },
+        body: formData
+    })
+}
+
+const updateProduct = async (token, id, data) => {
+    return await fetch(url + '/products/' + id, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${ token }`,
+        },
+        body: JSON.stringify(data)
+    })
+}
+
+export { searchProducts, 
+    getProductsByCategory, 
+    getAllAvailableProducts, 
+    getProduct, 
+    createProduct, 
+    updateProduct
+}

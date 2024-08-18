@@ -142,7 +142,7 @@ export default function CategoryList() {
           </View>
         )}
 
-        <ScrollView showsHorizontalScrollIndicator={false}>
+        <ScrollView style={{ marginBottom: 24 }} showsVerticalScrollIndicator={false}>
           {categories && categories.map((category) => (
             <CategoryItemList key={category._id} id={category._id} name={category.name} onDelete={onDeleteCategory} edit={CategoryEdit}/>
           ))}

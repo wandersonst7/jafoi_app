@@ -7,7 +7,7 @@ const searchProducts = async (req, res) => {
 
     const products = await Product.find({status: 1, title: new RegExp(search, "i")}).sort({createdAt : -1}).exec();
 
-    res.status(200).json(products)
+    return res.status(200).json(products)
 }
 
 const buyProduct = async (req, res) => {
@@ -27,9 +27,9 @@ const buyProduct = async (req, res) => {
         product.status = 0,
         await product.save();
 
-        res.status(200).json({ success:"Status do produto alterado."})
+        return res.status(200).json({ success:"Status do produto alterado."})
     } catch (error) {
-        res.status(400).json({ error: "Não foi possível mudar o status do produto." })
+        return res.status(400).json({ error: "Não foi possível mudar o status do produto." })
     }
 }
 
@@ -41,9 +41,9 @@ const getProductsByCategory = async (req, res) => {
 
         const products = await Product.find({ status: 1, categoryId: category}).sort({createdAt : -1}).exec();
 
-        res.status(200).json(products)
+        return res.status(200).json(products)
     } catch (error) {
-        res.status(400).json({ error: "Não foi possível recuperar produtos." })
+        return res.status(400).json({ error: "Não foi possível recuperar produtos." })
     }
 }
 
@@ -57,9 +57,9 @@ const getAllProducts = async (req, res) => {
             products = await Product.find({ userId: req.user._id }).sort({createdAt : -1}).exec();
         }
 
-        res.status(200).json(products)
+        return res.status(200).json(products)
     } catch (error) {
-        res.status(400).json({ error: "Não foi possível recuperar produtos." })
+        return res.status(400).json({ error: "Não foi possível recuperar produtos." })
     }
 }
 
@@ -68,9 +68,9 @@ const getAllAvailableProducts = async (req, res) => {
 
         const products = await Product.find({ status: 1}).sort({createdAt : -1}).exec();
 
-        res.status(200).json(products)
+        return res.status(200).json(products)
     } catch (error) {
-        res.status(400).json({ error: "Não foi possível recuperar produtos." })
+        return res.status(400).json({ error: "Não foi possível recuperar produtos." })
     }
 }
 
@@ -83,12 +83,12 @@ const getProduct = async (req, res) => {
         const product = await Product.findById(id);
         
         if(!product){
-            res.status(404).json({ error: "Produto não encontrado." })
+            return res.status(404).json({ error: "Produto não encontrado." })
         }
 
-        res.status(200).json(product)
+        return res.status(200).json(product)
     } catch (error) {
-        res.status(400).json({ error: "Não foi possível recuperar o produto." })
+        return res.status(400).json({ error: "Não foi possível recuperar o produto." })
     }
 
 }
@@ -139,8 +139,7 @@ const createProduct = async (req, res) => {
         res.status(201).json(newProduct)
         
     } catch (error) {
-        console.log(error)
-        res.status(400).json({ error: "Não foi possível cadastrar o produto." })
+        return res.status(400).json({ error: "Não foi possível cadastrar o produto." })
     }
 
 }
@@ -170,14 +169,10 @@ const updateProduct = async (req, res) => {
         }
 
         if(product.userId.toString() !== req.user._id.toString() && req.user.role !== "ADMIN"){
-            res.status(403).json({
+            return res.status(403).json({
                 error: "Você não tem permissão para atualizar este produto."
             })
-            return;
         }
-
-        const image = req.file.filename;
-        const oldImage = product.image;
 
         product.title = title,
         product.price = price, 
@@ -187,19 +182,14 @@ const updateProduct = async (req, res) => {
         product.contact = contact, 
         product.whatsapp = whatsapp, 
         product.username = username,
-        product.image = image,
         product.userId = req.user._id,
         product.categoryId = categoryId
     
         await product.save();
 
-        // excluindo imagem antiga
-        const pathFile = "uploads\\products\\" + oldImage;
-        deleteImage(pathFile);
-
-        res.status(200).json(product)
+        return res.status(200).json(product)
     } catch (error) {
-        res.status(400).json({ error: "Não foi possível atualizar o produto." })
+        return res.status(400).json({ error: "Não foi possível atualizar o produto." })
     }
 
 }
@@ -212,10 +202,9 @@ const deleteProduct = async (req, res) => {
         const product = await Product.findById(id)
 
         if(product.userId.toString() !== req.user._id.toString() && req.user.role !== "ADMIN"){
-            res.status(403).json({
+            return res.status(403).json({
                 error: "Você não tem permissão para excluir este produto."
             })
-            return;
         }
 
         await Product.findByIdAndDelete(id);
@@ -224,10 +213,10 @@ const deleteProduct = async (req, res) => {
         const pathFile = "uploads\\products\\" + product.image;
         deleteImage(pathFile)
         
-        res.status(200).json({ success:"Produto excluído com sucesso."})
+        return res.status(200).json({ success:"Produto excluído com sucesso."})
     
     } catch (error) {
-        res.status(400).json({ error: "Não foi possível excluir o produto." })
+        return res.status(400).json({ error: "Não foi possível excluir o produto." })
     }
 }
 

@@ -25,9 +25,28 @@
     },
     "plugins": [
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir que o $(JaFoiApp) acesse a camera",
+          "microphonePermission": "Permitir que o $(JaFoiApp) acesse o microfone",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Lato-Regular.ttf"]
+          "fonts": [
+            {
+              "src": "./assets/fonts/Lato-Regular.ttf",
+              "name": "Lato"
+            }
+          ]
         }
       ]
     ]

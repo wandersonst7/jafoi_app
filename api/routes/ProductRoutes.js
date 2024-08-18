@@ -11,7 +11,7 @@ router.get('/products/category/:id', ProductController.getProductsByCategory);
 router.get('/products/:id', ProductController.getProduct);
 router.post('/products', imageUpload.single("image"), createAndUpdateValidation, ProductController.createProduct);
 router.patch('/products/:id/buy', ProductController.buyProduct)
-router.put('/products/:id', imageUpload.single("image"), createAndUpdateValidation, ProductController.updateProduct);
+router.put('/products/:id', createAndUpdateValidation, ProductController.updateProduct);
 router.delete('/products/:id', ProductController.deleteProduct);
 
 module.exports = router;

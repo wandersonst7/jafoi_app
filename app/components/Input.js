@@ -5,7 +5,7 @@ import MaskInput from 'react-native-mask-input';
 // Icons
 import Feather from '@expo/vector-icons/Feather';
 
-export default function Input({ type = "", maskInput = false, search = false, mask, autoFocus = false, placeholder, password = false, onChange, value, onSearch }){
+export default function Input({ type = "", maskInput = false, search = false, mask, autoFocus = false, placeholder, password = false, onChange, value, onSearch, multiline, numberOfLines}){
 
   if(maskInput){
     return (
@@ -43,6 +43,8 @@ export default function Input({ type = "", maskInput = false, search = false, ma
     return (
       <TextInput
           style={styles.input}
+          multiline={multiline}
+          numberOfLines={numberOfLines}
           autoFocus={autoFocus}
           placeholder={placeholder}
           placeholderTextColor={PLACEHOLDER_COLOR}
