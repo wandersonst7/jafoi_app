@@ -239,7 +239,7 @@ export default function ProductAdd() {
             <Input
             onChange={setLocation} 
             value={location} 
-            placeholder="Localização (cidade)" />
+            placeholder="Localização (Cidade/Estado)" />
         </View>
 
         <View style={{ marginBottom: 24, width: '100%'}}>

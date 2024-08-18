@@ -65,7 +65,7 @@ export default function ProductEdit() {
               }
 
               setTitle(jsonProduct.title);
-              setPrice(jsonProduct.price);
+              setPrice(jsonProduct.price.toString());
               setDescription(jsonProduct.description);
               setLocation(jsonProduct.location);
               setStatus(jsonProduct.status);
@@ -241,7 +241,7 @@ export default function ProductEdit() {
             <Input
             onChange={setLocation} 
             value={location} 
-            placeholder="Localização (cidade)" />
+            placeholder="Localização (Cidade/Estado)" />
         </View>
 
         <View style={{ marginBottom: 24, width: '100%'}}>

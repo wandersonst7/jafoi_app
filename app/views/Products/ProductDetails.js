@@ -67,6 +67,7 @@ export default function ProductDetails() {
             <>
                 <Text>{product.title}</Text>
                 <Text>{product.description}</Text>
+                <Text>{product.price}</Text>
                 <Text>{product.location}</Text>
                 <Text>{product.contact}</Text>
                 <Text>{product.username}</Text>
