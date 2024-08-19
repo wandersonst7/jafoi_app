@@ -53,7 +53,7 @@ const register = async (req, res) => {
         const token = jsonwebtoken.sign(
             { user: payloadToken },
             jwtSecret,
-            { expiresIn: '60m'}
+            { expiresIn: '7d'}
         );
 
         // Dados do usuário
@@ -76,7 +76,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { phone, password, keepAlive } = req.body;
+        const { phone, password } = req.body;
 
         const validation = loginValidation(req.body);
 
@@ -100,20 +100,11 @@ const login = async (req, res) => {
             phone: user.phone,
         }
 
-        let token = null;
-        
-        if(keepAlive){
-            token = jsonwebtoken.sign(
-                { user: payloadToken },
-                jwtSecret,
-            );
-        }else{
-            token = jsonwebtoken.sign(
-                { user: payloadToken },
-                jwtSecret,
-                { expiresIn: '60m'}
-            );
-        }
+        const token = jsonwebtoken.sign(
+            { user: payloadToken },
+            jwtSecret,
+            { expiresIn: '7d'}
+        );
 
         const returnUser = {
             _id: user._id,
