@@ -17,6 +17,21 @@ export default function UserPage() {
   // Navigation
   const navigation = useNavigation();
 
+  // Resolvendo bug
+  // Situação: 
+  // O usuário realiza o login | 
+  // Vem para página "Conta" (esta página) |
+  // Entra na página de Produtos e volta para página "Conta" (esta página) |
+  // Realiza o logout | Ao logar novamente, ele entra direto na página "Conta" (não pode) |
+  // E não consegue acessar as rotas de produto, ou categoria (se for admin)
+  // Solução:
+  // Ao realizar logout, redireciono o usuário para a página Inicio |
+  // E depois executo o logout
+  const ExitRedirectBug = async () => {
+    navigation.navigate("Inicio")
+    await logout();
+  };
+
   const ProductList = () => {
     navigation.navigate("ProductList");
   }
@@ -46,7 +61,7 @@ export default function UserPage() {
       )}
 
       <View style={{ marginBottom: 24, width: '100%'}}>
-        <ButtonComponent text="Logout" onPress={ logout } outline={true}/>
+        <ButtonComponent text="Logout" onPress={ ExitRedirectBug } outline={true}/>
       </View>
 
     </View>
