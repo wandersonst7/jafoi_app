@@ -66,7 +66,18 @@ export default function Home() {
             const jsonProducts = await respProducts.json();
     
             if(jsonCategories.length > 0){
-              setCategories(jsonCategories)
+
+              let updatedCategories = [...jsonCategories];
+
+              if (activeCategoryId) {
+                const activeCategoryIndex = updatedCategories.findIndex(category => category._id === activeCategoryId);
+                if (activeCategoryIndex > -1) {
+                  const [activeCategory] = updatedCategories.splice(activeCategoryIndex, 1);
+                  updatedCategories = [activeCategory, ...updatedCategories];
+                }
+              }
+
+              setCategories(updatedCategories);
             }else{
               setCategories(null)
             }
