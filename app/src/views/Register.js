@@ -50,7 +50,7 @@ export default function Register(){
         setToken(json.data.token)
         await AsyncStorage.setItem('jfa_token', json.data.token);
         setError("")
-        navigation.navigate('Inicio');
+
       }catch(err){
         setError("Ocorreu um erro ao realizar o cadastro.")
       }finally{

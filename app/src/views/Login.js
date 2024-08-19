@@ -22,8 +22,8 @@ export default function Login(){
     const navigation = useNavigation();
 
     // Login
-    const [phone, setPhone] = useState("");
-    const [password, setPassword] = useState("");
+    const [phone, setPhone] = useState("(88) 88888-8888");
+    const [password, setPassword] = useState("12345678");
     const [keepAlive, setKeepAlive] = useState(false);
 
     // Error
