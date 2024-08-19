@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Image, Pressable, ActivityIndicator } from "react-native";
-import { global_styles, BLACK, LINKS_COLOR, ORANGE } from "../styles";
+import { View, Text, Image, Pressable } from "react-native";
+import { global_styles, BLACK, LINKS_COLOR } from "../styles";
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from "../context/AuthContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
