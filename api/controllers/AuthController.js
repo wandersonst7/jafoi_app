@@ -41,8 +41,7 @@ const register = async (req, res) => {
 
         // Verificando se o usuário foi cadastrado
         if(!newUser){
-            res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."});
-            return;
+            return res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."});
         }
         
         // Token
@@ -65,13 +64,13 @@ const register = async (req, res) => {
             role: newUser.role,
         }
 
-        res.status(201).json({data: {
+        return res.status(201).json({data: {
             user: returnUser,
             token: token
         }});
 
     } catch (error) {
-        res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
+        return res.status(400).json({error: "Ocorreu um erro ao realizar o registro do usuário."})
     }
 }
 
@@ -88,13 +87,11 @@ const login = async (req, res) => {
         const user = await User.findOne({ phone });
 
         if(!user){
-            res.status(400).json({error: "Número de telefone ou senha incorreta."});
-            return;
+            return res.status(400).json({error: "Número de telefone ou senha incorreta."});
         }
 
         if(!(await bcrypt.compare(password, user.password))){
-            res.status(400).json({error: "Número de telefone ou senha incorreta."});
-            return;
+            return res.status(400).json({error: "Número de telefone ou senha incorreta."});
         }
 
         // Token
@@ -125,15 +122,14 @@ const login = async (req, res) => {
             role: user.role,
         }
         
-        res.status(200).json({ data: {
+        return res.status(200).json({ data: {
             user: returnUser,
             token: token
         }});
 
 
     } catch (error) {
-        console.log(error)
-        res.status(400).json({error: "Ocorreu um erro ao realizar o login."})
+        return res.status(400).json({error: "Ocorreu um erro ao realizar o login."})
     }
 }
 
@@ -148,22 +144,20 @@ const tokenVerifyAndGetUserData = async (req, res) => {
         const payload = jsonwebtoken.verify(token, jwtSecret);
         
         if(!payload.user){
-            res.status(401).json({error: "Token inválido!"})
-            return;
+            return res.status(401).json({error: "Token inválido!"})
         }
 
         const user = await User.findById(payload.user.id).select("-password -createdAt -updatedAt -__v");
 
         // Verificando se o usuário existe
         if(!user){
-            res.status(401).json({error: "Token inválido!"})
-            return;
+            return res.status(401).json({error: "Token inválido!"})
         }
 
-        res.status(200).json({data: { user }});
+        return res.status(200).json({data: { user }});
 
     } catch (error) {
-        res.status(401).json({error: "Token inválido!"})
+        return res.status(401).json({error: "Token inválido!"})
     }
 
 }
