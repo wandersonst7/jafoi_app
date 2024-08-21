@@ -85,7 +85,6 @@ export default function Register(){
 
       <View style={{ marginBottom: 16, width: '100%' }}>
         <Input
-          autoFocus={true}
           maskInput={true}
           type="numeric"
           mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} 
