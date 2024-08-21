@@ -14,7 +14,7 @@ export default function WhatsappButton({ whatsapp, productTitle }){
             Linking.canOpenURL("whatsapp://send?text=oi").then(supported => {
               if (supported) {
                 return Linking.openURL(
-                  `whatsapp://send?phone=55${formatWhatsapp(whatsapp)}&text=Tenho interesse no produto: ${productTitle}`
+                  `https://api.whatsapp.com//send?phone=55${formatWhatsapp(whatsapp)}&text=Tenho interesse no produto: ${productTitle}`
                 );
               } else {
                 return Linking.openURL(
