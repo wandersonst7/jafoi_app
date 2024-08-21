@@ -26,10 +26,9 @@ export default function UserPage() {
   // E não consegue acessar as rotas de produto, ou categoria (se for admin)
   // Solução:
   // Ao realizar logout, redireciono o usuário para a página Inicio |
-  // E depois executo o logout
   const ExitRedirectBug = async () => {
-    navigation.navigate("Inicio")
     await logout();
+    navigation.navigate("Inicio")
   };
 
   const ProductList = () => {
